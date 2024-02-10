@@ -5,16 +5,14 @@ namespace App\Core\Routes;
 class RouteDispatcher
 {
     private string $requestUri;
-    private RouteConfiguration $routeConfiguration;
     private array $paramMap = [];
-    public function __construct(RouteConfiguration $routeConfiguration, string $requestUri = '/')
+    private RouteConfiguration $routeConfiguration;
+
+    public function dispatch(RouteConfiguration $routeConfiguration, string $uri): array|false
     {
         $this->routeConfiguration = $routeConfiguration;
-        $this->requestUri = $requestUri;
-    }
+        $this->requestUri = $uri;
 
-    public function dispatch(): array|false
-    {
         $this->saveRequestUri();
 
         $this->setParamMap();
@@ -30,7 +28,7 @@ class RouteDispatcher
         return false;
     }
 
-    public function saveRequestUri(): void
+    private function saveRequestUri(): void
     {
         if($this->requestUri !== '/'){
             $this->requestUri = $this->clean($this->requestUri);
@@ -50,8 +48,7 @@ class RouteDispatcher
     }
     private function makeRegexRequest(): void
     {
-        if(empty($this->paramMap))
-        {
+        if(empty($this->paramMap)) {
             return;
         }
 
