@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Core\Container;
-use App\Core\Request\Request;
-use App\Core\Request\RequestInterface;
-use App\Core\Routes\Route;
-use App\Core\Routes\RouteConfiguration;
+use App\Core\Http\Request\Request;
+use App\Core\Http\Request\RequestInterface;
+use App\Core\Http\Response\Response;
+use App\Core\Http\Response\ResponseInterface;
 use App\Core\Routes\RouteInterface;
 use App\Core\Routes\Router;
 
@@ -12,6 +12,7 @@ class Container
 {
     public readonly RouteInterface $router;
     public readonly RequestInterface $request;
+    public readonly ResponseInterface $response;
     public function __construct()
     {
         $this->createDependencies();
@@ -20,8 +21,10 @@ class Container
     private function createDependencies(): void
     {
         $this->request = Request::createFromGlobals();
+        $this->response = new Response();
         $this->router = new Router(
-          $this->request
+          $this->request,
+          $this->response
         );
     }
 }
