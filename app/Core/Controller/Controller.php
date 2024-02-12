@@ -3,14 +3,12 @@
 namespace App\Core\Controller;
 
 use App\Core\Http\Request\RequestInterface;
-use App\Core\Http\Response\Response;
 use App\Core\Http\Response\ResponseInterface;
-
 
 abstract class Controller
 {
-    private RequestInterface $request;
-    public ResponseInterface $response;
+    protected RequestInterface $request;
+    protected ResponseInterface $response;
 
     public function setRequest(RequestInterface $request): void
     {
@@ -20,8 +18,12 @@ abstract class Controller
     {
         $this->response = $response;
     }
-    public function request(): RequestInterface
+    protected function request(): RequestInterface
     {
         return $this->request;
+    }
+    protected function response(): ResponseInterface
+    {
+        return $this->response;
     }
 }

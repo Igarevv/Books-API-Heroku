@@ -5,8 +5,8 @@ use App\Core\Controller\Controller;
 
 class HomeController extends Controller
 {
-    public function index()
+    public function index(): void
     {
-        echo 'HomeController';
+        echo "Welcome to Books API";
     }
 }

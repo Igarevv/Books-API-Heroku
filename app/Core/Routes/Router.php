@@ -2,10 +2,11 @@
 
 namespace App\Core\Routes;
 
+use App\Core\Http\Request\JsonRequestInterface;
 use App\Core\Http\Request\RequestInterface;
 use App\Core\Http\Response\Response;
 use App\Core\Http\Response\ResponseInterface;
-use App\Core\Controller\Controller;
+
 
 class Router implements RouteInterface
 {
@@ -25,6 +26,11 @@ class Router implements RouteInterface
             $this->response->status(Response::NOT_FOUND)->message('404 | Not found')->send();
         }
         [$controllerName, $controllerMethod, $requestParams] = $route;
+
+        if($httpMethod === 'POST' && $this->request->server['CONTENT_TYPE'] == 'application/json'){
+            $data = json_decode(file_get_contents("php://input"), true);
+            $this->request->setJsonData($data);
+        }
 
         if($this->isValidRoute($controllerName, $controllerMethod)){
 
