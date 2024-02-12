@@ -52,11 +52,11 @@ class RouteDispatcher
         $requestUriArray = explode('/', $this->requestUri);
 
         foreach ($this->matchedRoutes as $key => $param) {
-            if(!isset($requestUriArray[$key])){
-                return;
+            if(! isset($requestUriArray[$key])){
+                break;
             }
             $this->paramFromRequest[$param] = $requestUriArray[$key];
-            $requestUriArray[$key] = '{.*}';
+            $requestUriArray[$key] = '{[^/]+}';
         }
 
         $this->requestUri = implode('/', $requestUriArray);
