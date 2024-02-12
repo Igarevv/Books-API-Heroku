@@ -5,7 +5,8 @@ namespace App\Core\Routes;
 class RouteDispatcher
 {
     private string $requestUri;
-    private array $paramMap = [];
+    private array $matchedRoutes = [];
+    private array $paramFromRequest = [];
     private RouteConfiguration $routeConfiguration;
 
     public function dispatch(RouteConfiguration $routeConfiguration, string $uri): array|false
@@ -22,7 +23,8 @@ class RouteDispatcher
         if(preg_match("/^$this->requestUri$/", $this->routeConfiguration->route)){
             return [
               $this->routeConfiguration->getControllerName(),
-              $this->routeConfiguration->getIndex()
+              $this->routeConfiguration->getIndex(),
+              $this->paramFromRequest
             ];
         }
         return false;
@@ -41,23 +43,19 @@ class RouteDispatcher
 
         foreach ($routeArray as $key => $param){
             if(preg_match('/{.*}/', $param)){
-                $this->paramMap[$key] = preg_replace('/(^{)|(}$)/', '', $param);
+                $this->matchedRoutes[$key] = preg_replace('/(^{)|(}$)/', '', $param);
             }
         }
-
     }
     private function makeRegexRequest(): void
     {
-        if(empty($this->paramMap)) {
-            return;
-        }
-
         $requestUriArray = explode('/', $this->requestUri);
 
-        foreach ($this->paramMap as $key => $param) {
+        foreach ($this->matchedRoutes as $key => $param) {
             if(!isset($requestUriArray[$key])){
                 return;
             }
+            $this->paramFromRequest[$param] = $requestUriArray[$key];
             $requestUriArray[$key] = '{.*}';
         }
 

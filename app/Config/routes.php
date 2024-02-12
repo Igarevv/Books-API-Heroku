@@ -4,9 +4,10 @@ namespace App\Config;
 
 use App\Core\Routes\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\OrderController;
 
 return [
-  Route::get('/users/{id}/order', ['UserController::class', 'index']),
-  Route::get('/posts/{post}', [HomeController::class, 'index']),
-  Route::get('/users/{id}/order/50', ['ProfileController::class', 'index']),
+  Route::get('/', [HomeController::class, 'index']),
+  Route::post('/register', ['RegisterController::class', 'index']),
+  Route::get('/users/{userId}/orders/{orderId}', [OrderController::class, 'index'])
 ];
