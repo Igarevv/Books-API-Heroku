@@ -5,6 +5,7 @@ namespace App\Core\Routes;
 use App\Core\Http\Request\RequestInterface;
 use App\Core\Http\Response\Response;
 use App\Core\Http\Response\ResponseInterface;
+use App\Core\Controller\Controller;
 
 class Router implements RouteInterface
 {
@@ -25,14 +26,15 @@ class Router implements RouteInterface
         }
         [$controllerName, $controllerMethod, $requestParams] = $route;
 
-        if(! class_exists($controllerName)){
-            throw new \Exception("Class controller not found - {$controllerName}");
-        }
-        if(! method_exists($controllerName, $controllerMethod)){
-            throw new \Exception("Method {$controllerMethod} in class controller {$controllerName} not found");
-        }
+        if($this->isValidRoute($controllerName, $controllerMethod)){
 
-        (new $controllerName)->$controllerMethod(...$requestParams);
+            $controller = new $controllerName();
+
+            call_user_func([$controller, 'setRequest'], $this->request);
+            call_user_func([$controller, 'setResponse'], $this->response);
+
+            call_user_func_array([$controller, $controllerMethod], $requestParams);
+        }
     }
     private function findRoute(string $uri, string $method): array|false
     {
@@ -49,6 +51,13 @@ class Router implements RouteInterface
         return false;
     }
 
+    private function isValidRoute(string $controllerName, string $controllerMethod): bool
+    {
+        if(class_exists($controllerName) && method_exists($controllerName, $controllerMethod)){
+            return true;
+        }
+        return false;
+    }
     private function getRoutesFromConfig()
     {
         return require_once APP_PATH.'/app/Config/routes.php';
