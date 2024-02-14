@@ -2,20 +2,41 @@
 
 namespace App;
 
+use App\Config\Config;
 use App\Core\Container\Container;
+use App\Core\Database\Database;
+use App\Core\Database\DatabaseInterface;
+use App\Core\Http\Request\RequestInterface;
+use App\Core\Routes\Router;
 
 class App
 {
-    private Container $container;
-    public function __construct()
+    private RequestInterface $request;
+    private static DatabaseInterface $db;
+    public function __construct(
+      protected Container $container,
+      protected Router $router,
+      protected Config $config
+    )
     {
-        $this->container = new Container();
+        static::$db = new Database($this->config);
+        $this->getContainers();
+    }
+    public static function db(): DatabaseInterface
+    {
+        return static::$db;
     }
     public function run()
     {
-        $this->container->router->dispatch(
-          $this->container->request->uri(),
-          $this->container->request->method()
+        $this->request = $this->container->make(RequestInterface::class);
+        $this->router->dispatch(
+          $this->request->uri(),
+          $this->request->method(),
+          $this->request
         );
+    }
+    private function getContainers()
+    {
+        require_once APP_PATH . '/app/bootstrap.php';
     }
 }

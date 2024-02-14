@@ -3,12 +3,11 @@
 namespace App\Core\Http\Request;
 
 use App\Core\Http\Response\ResponseInterface;
+use App\Core\Validator\Validator;
 use App\Core\Validator\ValidatorInterface;
 
 class Request implements RequestInterface, JsonRequestInterface
 {
-
-    private ValidatorInterface $validator;
 
     private array $jsonData = [];
 
@@ -17,8 +16,10 @@ class Request implements RequestInterface, JsonRequestInterface
       public readonly array $post,
       public readonly array $cookie,
       public readonly array $files,
-      public readonly array $server
-    ) {}
+      public readonly array $server,
+    )
+    {
+    }
 
     public static function createFromGlobals(): static
     {
@@ -35,14 +36,9 @@ class Request implements RequestInterface, JsonRequestInterface
         return $this->server['REQUEST_METHOD'];
     }
 
-    public function input(string $key, $default = null): mixed
+    public function input(string $key = null, $default = null): mixed
     {
         return $this->post[$key] ?? $this->get ?? $default;
-    }
-
-    public function setValidator(ValidatorInterface $validator): void
-    {
-        $this->validator = $validator;
     }
 
     public function setJsonData(array $jsonData): void
@@ -50,29 +46,14 @@ class Request implements RequestInterface, JsonRequestInterface
         $this->jsonData = $jsonData;
     }
 
-    public function getJsonData(string $key = ''): string|array
+    public function inputJsonData(string $key = ''): string|array
     {
-        if ($key == '') {
+        if (trim($key) !== '') {
             return $this->jsonData;
         }
         if (array_key_exists($key, $this->jsonData)) {
             return $this->jsonData[$key];
         }
-        return "";
+        return array();
     }
-
-    public function validate(array $rules): bool
-    {
-        $data = [];
-        foreach ($rules as $field => $rule) {
-            $data[$field] = $this->getJsonData($field);
-        }
-        return $this->validator->validate($data, $rules);
-    }
-
-    public function errors(): array
-    {
-        return $this->validator->errors();
-    }
-
 }

@@ -4,15 +4,8 @@ namespace App\Core\Http\Response;
 
 class Response implements ResponseInterface
 {
-    private string $message;
-    private int $status;
-    public const CREATED     = 201;
-    public const MOVED       = 301;
-    public const BAD_REQUEST = 400;
-    public const NOT_ALLOWED = 401;
-    public const FORBIDDEN   = 403;
-    public const NOT_FOUND   = 404;
-    public const SERVER_ERR  = 500;
+    private string $message = 'Something wrong';
+    private int $status = 404;
     public function status($status = self::NOT_FOUND): Response
     {
         $this->status = $status;
@@ -29,8 +22,16 @@ class Response implements ResponseInterface
         header("Content-Type: application/json");
         echo json_encode([
           'status'  => $this->status,
-          'message' => $this->message
+          'message' => $this->message,
         ]);
         exit;
+    }
+    public function get(): array
+    {
+        http_response_code($this->status);
+        return [
+          $this->status,
+          $this->message
+        ];
     }
 }

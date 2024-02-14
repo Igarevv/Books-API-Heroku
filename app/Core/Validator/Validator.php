@@ -42,7 +42,7 @@ class Validator implements ValidatorInterface
 
     public function errors(): array
     {
-        return ['errors' => $this->errors];
+        return $this->errors;
     }
 
 }

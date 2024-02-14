@@ -2,41 +2,94 @@
 
 namespace App\Core\Container;
 
-use App\Core\Http\Request\Request;
-use App\Core\Http\Request\RequestInterface;
-use App\Core\Http\Response\Response;
-use App\Core\Http\Response\ResponseInterface;
-use App\Core\Routes\RouteInterface;
-use App\Core\Routes\Router;
-use App\Core\Validator\Validator;
-
 class Container
 {
 
-    public readonly RouteInterface $router;
+    private array $entries = [];
 
-    public readonly RequestInterface $request;
-
-    public readonly ResponseInterface $response;
-
-    public readonly Validator $validator;
-
-    public function __construct()
+    public function get(string $key): mixed
     {
-        $this->createDependencies();
+        if ($this->has($key)) {
+            $entry = $this->entries[$key];
+            if (is_callable($entry)) {
+                return $entry($this);
+            }
+            $key = $entry;
+        }
+        return $this->resolve($key);
     }
 
-    private function createDependencies(): void
+    public function bind(string $key, callable|string $concrete): void
     {
-        $this->request = Request::createFromGlobals();
-        $this->response = new Response();
-        $this->validator = new Validator();
+        $this->entries[$key] = $concrete;
+    }
 
-        $this->request->setValidator($this->validator);
-        $this->router = new Router(
-          $this->request,
-          $this->response
-        );
+    public function has(string $key): bool
+    {
+        return isset($this->entries[$key]);
+    }
+
+    public function resolve(string $className)
+    {
+        try {
+            $reflection = new \ReflectionClass($className);
+        } catch (\ReflectionException $e) {
+            throw new \Exception($e->getMessage(), $e->getCode(), $e);
+        }
+
+        if ( ! $reflection->isInstantiable()) {
+            throw new \Exception("Class {$className} is not instantiable");
+        }
+
+        $constructor = $reflection->getConstructor();
+
+        if ( ! $constructor) {
+            return new $className();
+        }
+
+        $parameters = $constructor->getParameters();
+
+        if ( ! $parameters) {
+            return new $className();
+        }
+
+        $dependencies = array_map(function (\ReflectionParameter $param) use (
+          $className
+        ) {
+            $name = $param->getName();
+            $type = $param->getType();
+
+            if ( ! $type) {
+                throw new \Exception("Failed to resolve {$className} because 
+                parameter {$name} is missing a type hint.");
+            }
+
+            if ($type instanceof \ReflectionNamedType) {
+                return $this->get($type->getName());
+            }
+
+            throw new \Exception(
+              "Failed to resolve class {$className} because invalid param {$name}"
+            );
+        }, $parameters);
+
+        return $reflection->newInstanceArgs($dependencies);
+    }
+
+    public function make(string $key)
+    {
+        if (isset($this->entries[$key])) {
+            $resolver = $this->entries[$key];
+
+            if (is_string($resolver) && class_exists($resolver)) {
+                return $this->resolve($resolver);
+            } elseif (is_callable($resolver)) {
+                return $resolver();
+            }
+            return $resolver;
+        }
+
+        throw new \Exception("Dependency $key not found in container.");
     }
 
 }

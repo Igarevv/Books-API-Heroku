@@ -2,44 +2,46 @@
 
 namespace App\Core\Routes;
 
-use App\Core\Http\Request\JsonRequestInterface;
+use App\Core\Container\Container;
+use App\Core\Http\Json\JsonParser;
 use App\Core\Http\Request\RequestInterface;
-use App\Core\Http\Response\Response;
 use App\Core\Http\Response\ResponseInterface;
 
 
 class Router implements RouteInterface
 {
+    private ResponseInterface $response;
+    private RequestInterface $request;
     public function __construct(
-      private readonly RequestInterface $request,
-      private readonly ResponseInterface $response
+        private Container $container
     )
     {
         $this->getRoutesFromConfig();
     }
 
-    public function dispatch(string $uri, string $httpMethod): void
+    public function dispatch(string $uri, string $httpMethod, RequestInterface $request): void
     {
+        $this->request = $request;
+        $this->response = $this->container->make(ResponseInterface::class);
         $route = $this->findRoute($uri, $httpMethod);
 
         if(! $route){
-            $this->response->status(Response::NOT_FOUND)->message('404 | Not found')->send();
+            $this->response
+              ->status(ResponseInterface::NOT_FOUND)
+              ->message('404 | Not found')
+              ->send();
         }
         [$controllerName, $controllerMethod, $requestParams] = $route;
 
         if($httpMethod === 'POST' && $this->request->server['CONTENT_TYPE'] == 'application/json'){
-            $data = json_decode(file_get_contents("php://input"), true);
-            $this->request->setJsonData($data);
+            $this->request->setJsonData(JsonParser::request());
         }
 
         if($this->isValidRoute($controllerName, $controllerMethod)){
 
-            $controller = new $controllerName();
+            $controller = $this->container->get($controllerName);
 
-            call_user_func([$controller, 'setRequest'], $this->request);
-            call_user_func([$controller, 'setResponse'], $this->response);
-
-            call_user_func_array([$controller, $controllerMethod], $requestParams);
+            call_user_func_array([$controller, $controllerMethod], [$this->request, ...$requestParams]);
         }
     }
     private function findRoute(string $uri, string $method): array|false
@@ -66,7 +68,7 @@ class Router implements RouteInterface
     }
     private function getRoutesFromConfig()
     {
-        return require_once APP_PATH.'/app/Config/routes.php';
+        return require_once APP_PATH.'/configs/routes.php';
     }
 
 }
