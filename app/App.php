@@ -11,32 +11,38 @@ use App\Core\Routes\Router;
 
 class App
 {
+
     private RequestInterface $request;
+
     private static DatabaseInterface $db;
+
     public function __construct(
       protected Container $container,
       protected Router $router,
       protected Config $config
-    )
-    {
+    ) {
         static::$db = new Database($this->config);
         $this->getContainers();
     }
+
     public static function db(): DatabaseInterface
     {
         return static::$db;
     }
+
     public function run()
     {
-        $this->request = $this->container->make(RequestInterface::class);
+        $this->request = $this->container->get(RequestInterface::class);
         $this->router->dispatch(
           $this->request->uri(),
           $this->request->method(),
           $this->request
         );
     }
+
     private function getContainers()
     {
-        require_once APP_PATH . '/app/bootstrap.php';
+        require_once APP_PATH.'/app/bootstrap.php';
     }
+
 }

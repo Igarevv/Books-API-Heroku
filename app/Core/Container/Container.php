@@ -2,31 +2,34 @@
 
 namespace App\Core\Container;
 
-class Container
+use App\Http\Exceptions\ContainerException;
+use Psr\Container\ContainerInterface;
+
+class Container implements ContainerInterface
 {
 
     private array $entries = [];
 
-    public function get(string $key): mixed
+    public function get(string $id): mixed
     {
-        if ($this->has($key)) {
-            $entry = $this->entries[$key];
+        if ($this->has($id)) {
+            $entry = $this->entries[$id];
             if (is_callable($entry)) {
                 return $entry($this);
             }
-            $key = $entry;
+            $id = $entry;
         }
-        return $this->resolve($key);
+        return $this->resolve($id);
     }
 
-    public function bind(string $key, callable|string $concrete): void
+    public function bind(string $id, callable|string $concrete): void
     {
-        $this->entries[$key] = $concrete;
+        $this->entries[$id] = $concrete;
     }
 
-    public function has(string $key): bool
+    public function has(string $id): bool
     {
-        return isset($this->entries[$key]);
+        return isset($this->entries[$id]);
     }
 
     public function resolve(string $className)
@@ -34,7 +37,7 @@ class Container
         try {
             $reflection = new \ReflectionClass($className);
         } catch (\ReflectionException $e) {
-            throw new \Exception($e->getMessage(), $e->getCode(), $e);
+            throw new \ReflectionException($e->getMessage(), $e->getCode(), $e);
         }
 
         if ( ! $reflection->isInstantiable()) {
@@ -60,7 +63,7 @@ class Container
             $type = $param->getType();
 
             if ( ! $type) {
-                throw new \Exception("Failed to resolve {$className} because 
+                throw new ContainerException("Failed to resolve {$className} because 
                 parameter {$name} is missing a type hint.");
             }
 
@@ -68,28 +71,11 @@ class Container
                 return $this->get($type->getName());
             }
 
-            throw new \Exception(
+            throw new ContainerException(
               "Failed to resolve class {$className} because invalid param {$name}"
             );
         }, $parameters);
 
         return $reflection->newInstanceArgs($dependencies);
     }
-
-    public function make(string $key)
-    {
-        if (isset($this->entries[$key])) {
-            $resolver = $this->entries[$key];
-
-            if (is_string($resolver) && class_exists($resolver)) {
-                return $this->resolve($resolver);
-            } elseif (is_callable($resolver)) {
-                return $resolver();
-            }
-            return $resolver;
-        }
-
-        throw new \Exception("Dependency $key not found in container.");
-    }
-
 }

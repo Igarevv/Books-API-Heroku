@@ -4,9 +4,9 @@ namespace App\Core\Http\Response;
 
 interface ResponseInterface
 {
-    public function get(): array;
     public function status($status): Response;
     public function message(string $message): Response;
+    public function data(mixed $data): Response;
     public function send(): void;
     public const CREATED     = 201;
     public const MOVED       = 301;
