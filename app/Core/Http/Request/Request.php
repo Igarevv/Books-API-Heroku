@@ -48,7 +48,7 @@ class Request implements RequestInterface, JsonRequestInterface
 
     public function inputJsonData(string $key = ''): string|array
     {
-        if (trim($key) !== '') {
+        if (trim($key) === '') {
             return $this->jsonData;
         }
         if (array_key_exists($key, $this->jsonData)) {

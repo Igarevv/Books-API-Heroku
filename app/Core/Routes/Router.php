@@ -22,7 +22,9 @@ class Router implements RouteInterface
     public function dispatch(string $uri, string $httpMethod, RequestInterface $request): void
     {
         $this->request = $request;
-        $this->response = $this->container->make(ResponseInterface::class);
+
+        $this->response = $this->container->get(ResponseInterface::class);
+
         $route = $this->findRoute($uri, $httpMethod);
 
         if(! $route){
