@@ -8,6 +8,7 @@ class Response implements ResponseInterface
     private string $message = 'Something wrong';
 
     private array $data = [];
+    private bool $errors = false;
 
     private int $status = 404;
 
@@ -23,9 +24,10 @@ class Response implements ResponseInterface
         return $this;
     }
 
-    public function data(mixed $data): Response
+    public function data(mixed $data, bool $errors): Response
     {
         $this->data = is_array($data) ? $data : func_get_args();
+        $this->errors = $errors;
         return $this;
     }
 
@@ -41,9 +43,19 @@ class Response implements ResponseInterface
             $response['message'] = $this->message;
         }
         if (! empty($this->data)) {
-            $response['data'] = $this->data;
+            $key = $this->errors ? 'errors' : 'data';
+            $response[$key] = $this->data;
         }
         echo json_encode($response);
         exit;
+    }
+    public function notFound(): void
+    {
+        http_response_code(404);
+        header("Content-Type: application/json");
+        echo json_encode([
+          'status' => 404,
+          'message' => "404 | NOT FOUND"
+        ]);
     }
 }

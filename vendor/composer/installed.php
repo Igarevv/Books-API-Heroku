@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '300292ccebad794fbc470ebe07b885978d33f0f3',
+        'reference' => 'f6816cbff1f865d4941850134875a65e18e162d3',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '300292ccebad794fbc470ebe07b885978d33f0f3',
+            'reference' => 'f6816cbff1f865d4941850134875a65e18e162d3',
             'dev_requirement' => false,
         ),
         'brick/math' => array(
@@ -26,6 +26,15 @@
             'install_path' => __DIR__ . '/../brick/math',
             'aliases' => array(),
             'reference' => '0ad82ce168c82ba30d1c01ec86116ab52f589478',
+            'dev_requirement' => false,
+        ),
+        'firebase/php-jwt' => array(
+            'pretty_version' => 'v6.10.0',
+            'version' => '6.10.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../firebase/php-jwt',
+            'aliases' => array(),
+            'reference' => 'a49db6f0a5033aef5143295342f1c95521b075ff',
             'dev_requirement' => false,
         ),
         'psr/container' => array(

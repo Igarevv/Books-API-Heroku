@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Service\Register;
+namespace App\Http\Service\Auth;
 
 use App\Core\Validator\ValidatorInterface;
 use App\Http\Model\User\UserModel;
@@ -19,7 +19,7 @@ class RegisterService
     {
         $rules = [
           'name' => ['required', 'max:255', 'alphanumeric'],
-          'email' => ['email'],
+          'email' => ['email', 'unique:User'],
           'password' => ['required'],
         ];
 
@@ -37,9 +37,7 @@ class RegisterService
 
     public function insertData(array $userData): bool
     {
-        $user = new UserModel($userData['name'], $userData['email'],
-          $userData['password']);
-        return $user->insert();
+        return UserModel::insert($userData);
     }
 
     public function errors(): array

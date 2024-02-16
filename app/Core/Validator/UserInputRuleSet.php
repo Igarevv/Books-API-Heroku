@@ -2,6 +2,9 @@
 
 namespace App\Core\Validator;
 
+use App\App;
+use App\Http\Model\User\UserModel;
+
 class UserInputRuleSet
 {
     private array $default_error_message = [
@@ -11,13 +14,14 @@ class UserInputRuleSet
       'alphanumeric' => "Field %s can only contains letters, numbers and special symbols: ' or - ",
       'max' => "Field %s cannot be more than %d symbols",
       'min' => "Field %s cannot be less than %d symbols",
+      'unique' => "Sorry, but this %s is already exists"
     ];
     public function findViolation(string $rule_name, array $data, string $field_name, string $rule_value = null): string|false
     {
         if (! method_exists($this, $rule_name)) {
             throw new \InvalidArgumentException("Invalid rule: $rule_name");
         }
-        if (call_user_func_array([$this, $rule_name], [$data[$field_name], $rule_value])) {
+        if (call_user_func_array([$this, $rule_name], [$data[$field_name], $rule_value, $field_name])) {
             return false;
         }
         if (! is_null($rule_value)) {
@@ -48,10 +52,10 @@ class UserInputRuleSet
      */
     protected function required(?string $data): bool
     {
-        if (is_null($data) || trim($data) === '') {
-            return false;
+        if (! is_null($data) || trim($data) !== '') {
+            return true;
         }
-        return true;
+        return false;
     }
 
     /**
@@ -61,10 +65,10 @@ class UserInputRuleSet
      */
     protected function numeric(mixed $data): bool
     {
-        if (! is_numeric($data)) {
-            return false;
+        if (is_numeric($data)) {
+            return true;
         }
-        return true;
+        return false;
     }
 
     /**
@@ -75,10 +79,10 @@ class UserInputRuleSet
     protected function alphanumeric(string $data): bool
     {
         $extra_spaces = preg_replace('/\s{2,}/', ' ', $data);
-        if (! preg_match('/^[a-zA-Z0-9\'\s-]+([a-zA-Z0-9\'\s-]+)*$/', $extra_spaces)) {
-            return false;
+        if (preg_match('/^[a-zA-Z0-9\'\s-]+([a-zA-Z0-9\'\s-]+)*$/', $extra_spaces)) {
+            return true;
         }
-        return true;
+        return false;
     }
 
     /**
@@ -89,10 +93,10 @@ class UserInputRuleSet
      */
     protected function max(string $data, int $value): bool
     {
-        if (mb_strlen($data) > $value) {
-            return false;
+        if (mb_strlen($data) < $value) {
+            return true;
         }
-        return true;
+        return false;
     }
 
     /**
@@ -103,10 +107,10 @@ class UserInputRuleSet
      */
     protected function min(string $data, int $value): bool
     {
-        if (mb_strlen($data) < $value) {
-            return false;
+        if (mb_strlen($data) > $value) {
+            return true;
         }
-        return true;
+        return false;
     }
 
     /**
@@ -116,10 +120,19 @@ class UserInputRuleSet
      */
     protected function email(string $data): bool
     {
-        if (! filter_var($data, FILTER_VALIDATE_EMAIL)) {
-            return false;
+        if (filter_var($data, FILTER_VALIDATE_EMAIL)) {
+            return true;
         }
-        return true;
+        return false;
     }
 
+    protected function unique(string $data, string $value, string $column): bool
+    {
+        $pdo = App::db();
+
+        $sql = "SELECT $column FROM $value WHERE $column = :$column";
+
+        $stmt = $pdo->execute($sql, [':email' => $data]);
+        return $stmt->fetchColumn() === false;
+    }
 }

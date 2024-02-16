@@ -38,7 +38,13 @@ class Request implements RequestInterface, JsonRequestInterface
 
     public function input(string $key = null, $default = null): mixed
     {
-        return $this->post[$key] ?? $this->get ?? $default;
+        if(! empty($this->jsonData)){
+            return $key == null ? $this->jsonData : $this->inputJsonData($key);
+        }
+        if($key == null){
+            return $this->post;
+        }
+        return [$key => $this->post[$key]] ?? [$key => $this->get] ?? $default;
     }
 
     public function setJsonData(array $jsonData): void
@@ -46,13 +52,10 @@ class Request implements RequestInterface, JsonRequestInterface
         $this->jsonData = $jsonData;
     }
 
-    public function inputJsonData(string $key = ''): string|array
+    private function inputJsonData(string $key): array
     {
-        if (trim($key) === '') {
-            return $this->jsonData;
-        }
         if (array_key_exists($key, $this->jsonData)) {
-            return $this->jsonData[$key];
+            return [$key => $this->jsonData[$key]];
         }
         return array();
     }

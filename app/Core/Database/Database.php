@@ -47,23 +47,24 @@ class Database implements DatabaseInterface
         }
     }
 
-    public function prepare(string $sql): \PDOStatement
+    private function prepare(string $sql): \PDOStatement
     {
         return $this->pdo->prepare($sql);
     }
 
-    public function execute(string $sql, array $parameters): \PDOStatement|false
+    public function execute(string $sql, array $parameters = []): \PDOStatement|false
     {
         $statement = $this->prepare($sql);
+
         foreach ($parameters as $key => $parameter){
             $statement->bindValue($key, $parameter);
         }
+
         if($statement->execute()){
             return $statement;
         }
         return false;
     }
-
     private function disconnect(): void
     {
         $this->pdo = null;
