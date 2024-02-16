@@ -6,17 +6,20 @@ class Validator implements ValidatorInterface
 {
     protected array $errors;
 
-    protected array $data;
 
     public function __construct()
     {
         $this->errors = [];
-        $this->data = [];
     }
 
     public function validate(array $data, array $rules): bool
     {
-        $this->data = $data;
+        foreach ($rules as $rule_key => $rule_array) {
+            if (! array_key_exists($rule_key, $data)) {
+                $this->errors[$rule_key][] = "Field $rule_key is missing!";
+                return false;
+            }
+        }
         return (empty($this->checkDataByRule($data, $rules)));
     }
 

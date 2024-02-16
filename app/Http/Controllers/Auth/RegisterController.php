@@ -1,26 +1,25 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
 use App\Core\Controller\Controller;
-use App\Core\Http\Json\JsonParser;
 use App\Core\Http\Request\RequestInterface;
 use App\Core\Http\Response\ResponseInterface;
-use App\Http\Service\Register\RegisterService;
+use App\Http\Service\Auth\RegisterService;
 
 class RegisterController extends Controller
 {
 
-    private array $userData = [];
+    protected array $userData = [];
 
     public function __construct(
-      private RegisterService $registerService,
-      private ResponseInterface $response
+      protected RegisterService $registerService,
+      protected ResponseInterface $response
     ) {}
 
     public function register(RequestInterface $request): void
     {
-        $this->userData = $request->inputJsonData();
+        $this->userData = $request->input();
 
         if (! $this->userData) {
             $this->response
@@ -32,9 +31,10 @@ class RegisterController extends Controller
             $this->response
               ->status(ResponseInterface::BAD_REQUEST)
               ->message('Bad request')
-              ->data($this->registerService->errors())
+              ->data($this->registerService->errors(), true)
               ->send();
         }
+
         $created = $this->registerService->insertData($this->userData);
         if ($created) {
             $this->response->status(ResponseInterface::CREATED)
@@ -42,5 +42,4 @@ class RegisterController extends Controller
               ->send();
         }
     }
-
 }

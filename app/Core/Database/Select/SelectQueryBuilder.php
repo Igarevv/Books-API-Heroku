@@ -9,9 +9,9 @@ class SelectQueryBuilder extends AbstractQueryBuilder implements SelectInterface
     protected array $columns = [];
     protected array $conditions = [];
     protected array $joiner = [];
-    public function select($columns): SelectQueryBuilder
+    public function select(...$columns): SelectQueryBuilder
     {
-        $this->columns = is_array($columns) ? $columns : func_get_args();
+        $this->columns = $columns;
         return $this;
     }
     public function where(string $column, string $operator, mixed $value): SelectQueryBuilder

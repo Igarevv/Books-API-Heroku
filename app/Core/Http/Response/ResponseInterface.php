@@ -6,8 +6,9 @@ interface ResponseInterface
 {
     public function status($status): Response;
     public function message(string $message): Response;
-    public function data(mixed $data): Response;
+    public function data(mixed $data, bool $errors): Response;
     public function send(): void;
+    public function notFound(): void;
     public const CREATED     = 201;
     public const MOVED       = 301;
     public const BAD_REQUEST = 400;

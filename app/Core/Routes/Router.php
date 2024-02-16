@@ -28,11 +28,9 @@ class Router implements RouteInterface
         $route = $this->findRoute($uri, $httpMethod);
 
         if(! $route){
-            $this->response
-              ->status(ResponseInterface::NOT_FOUND)
-              ->message('404 | Not found')
-              ->send();
+            $this->response->notFound();
         }
+
         [$controllerName, $controllerMethod, $requestParams] = $route;
 
         if($httpMethod === 'POST' && $this->request->server['CONTENT_TYPE'] == 'application/json'){

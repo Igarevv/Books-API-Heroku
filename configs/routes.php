@@ -3,10 +3,12 @@
 namespace App\Config;
 
 use App\Core\Routes\Route;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\RegisterController;
 
 return [
   Route::get('/', [HomeController::class, 'index']),
-  Route::post('/register', [RegisterController::class, 'register']),
+  Route::post('/api/login', [LoginController::class, 'login']),
+  Route::post('/api/register', [RegisterController::class, 'register']),
 ];

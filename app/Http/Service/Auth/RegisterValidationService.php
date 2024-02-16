@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Service\Register;
+namespace App\Http\Service\Auth;
 
 use App\Core\Http\Request\RequestInterface;
 

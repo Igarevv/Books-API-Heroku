@@ -22,7 +22,7 @@ class App
       protected Config $config
     ) {
         static::$db = new Database($this->config);
-        $this->getContainers();
+        $this->getBindings();
     }
 
     public static function db(): DatabaseInterface
@@ -40,7 +40,7 @@ class App
         );
     }
 
-    private function getContainers()
+    private function getBindings(): void
     {
         require_once APP_PATH.'/app/bootstrap.php';
     }
