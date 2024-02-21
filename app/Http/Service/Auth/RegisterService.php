@@ -3,15 +3,21 @@
 namespace App\Http\Service\Auth;
 
 use App\Core\Validator\ValidatorInterface;
-use App\Http\Model\User\UserModel;
+use App\Http\Model\Repository\User\UserRepositoryInterface;
+use App\Http\Service\FieldValidationService;
 
 class RegisterService
 {
 
     private ValidatorInterface $validator;
+    private UserRepositoryInterface $repository;
 
-    public function __construct(ValidatorInterface $validator)
+    public function __construct(
+      ValidatorInterface $validator,
+      UserRepositoryInterface $repository
+    )
     {
+        $this->repository = $repository;
         $this->validator = $validator;
     }
 
@@ -23,7 +29,7 @@ class RegisterService
           'password' => ['required'],
         ];
 
-        $registerValidationService = new RegisterValidationService();
+        $registerValidationService = new FieldValidationService();
         if ( ! $registerValidationService->checkFields($userData, $rules)) {
             return false;
         }
@@ -34,12 +40,10 @@ class RegisterService
         }
         return true;
     }
-
-    public function insertData(array $userData): bool
+    public function createUser(array $userData): bool
     {
-        return UserModel::insert($userData);
+        return $this->repository->insert($userData);
     }
-
     public function errors(): array
     {
         return $this->validator->errors();

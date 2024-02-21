@@ -24,6 +24,7 @@ class RouteDispatcher
             return [
               $this->routeConfiguration->getControllerName(),
               $this->routeConfiguration->getIndex(),
+              $this->routeConfiguration->getMiddleware(),
               $this->paramFromRequest
             ];
         }

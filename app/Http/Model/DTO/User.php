@@ -1,15 +1,22 @@
 <?php
 
-namespace App\DTO;
+namespace App\Http\Model\DTO;
 
-final class UserDTO
+class User
 {
     public function __construct(
+      private readonly string $user_id,
       private readonly string $name,
       private readonly string $email,
-      private readonly string $user_id
+      private readonly string $role
     )
-    {}
+    {
+    }
+
+    public function getUserId(): string
+    {
+        return $this->user_id;
+    }
 
     public function getName(): string
     {
@@ -21,9 +28,9 @@ final class UserDTO
         return $this->email;
     }
 
-    public function getUserId(): string
+    public function getRole(): string
     {
-        return $this->user_id;
+        return $this->role;
     }
 
 }

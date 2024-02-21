@@ -2,60 +2,42 @@
 
 namespace App\Core\Http\Response;
 
-class Response implements ResponseInterface
+abstract class Response
 {
+    const OK            = 200;
 
-    private string $message = 'Something wrong';
+    const CREATED       = 201;
 
-    private array $data = [];
-    private bool $errors = false;
+    const NO_CONTENT    = 204;
 
-    private int $status = 404;
+    const MOVED         = 301;
 
-    public function status($status = self::NOT_FOUND): Response
-    {
-        $this->status = $status;
-        return $this;
-    }
+    const NOT_MODIFIED  = 304;
 
-    public function message(string $message): Response
-    {
-        $this->message = $message;
-        return $this;
-    }
+    const BAD_REQUEST   = 400;
 
-    public function data(mixed $data, bool $errors): Response
-    {
-        $this->data = is_array($data) ? $data : func_get_args();
-        $this->errors = $errors;
-        return $this;
-    }
+    const UNAUTHORIZED  = 401;
 
-    public function send(): void
-    {
-        http_response_code($this->status);
-        header("Content-Type: application/json");
+    const FORBIDDEN     = 403;
 
-        $response = [
-          'status' => $this->status,
-        ];
-        if (isset($this->message)) {
-            $response['message'] = $this->message;
-        }
-        if (! empty($this->data)) {
-            $key = $this->errors ? 'errors' : 'data';
-            $response[$key] = $this->data;
-        }
-        echo json_encode($response);
-        exit;
-    }
-    public function notFound(): void
-    {
-        http_response_code(404);
-        header("Content-Type: application/json");
-        echo json_encode([
-          'status' => 404,
-          'message' => "404 | NOT FOUND"
-        ]);
-    }
+    const NOT_FOUND     = 404;
+
+    const UNPROCESSABLE = 422;
+
+    const SERVER_ERROR  = 500;
+
+    protected const HTTP_STATUS_MESSAGE = [
+      '200' => '200 | OK',
+      '201' => '201 | Created',
+      '204' => '204 | No Content',
+      '301' => '301 | Moved',
+      '304' => '304 | Not Modified',
+      '400' => '400 | Bad Request',
+      '401' => '401 | Unauthorized',
+      '403' => '403 | Forbidden',
+      '404' => '404 | Not Found',
+      '422' => '422 | Unprocessable Entity',
+      '500' => '500 | Server Error',
+    ];
+    public abstract function send(): void;
 }

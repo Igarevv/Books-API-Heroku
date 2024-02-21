@@ -4,7 +4,7 @@ namespace App\Core\Database\Select;
 
 use App\Core\Database\AbstractQueryBuilder;
 
-class SelectQueryBuilder extends AbstractQueryBuilder implements SelectInterface
+class SelectQueryBuilder extends AbstractQueryBuilder
 {
     protected array $columns = [];
     protected array $conditions = [];
@@ -14,9 +14,9 @@ class SelectQueryBuilder extends AbstractQueryBuilder implements SelectInterface
         $this->columns = $columns;
         return $this;
     }
-    public function where(string $column, string $operator, mixed $value): SelectQueryBuilder
+    public function where(string $column, string $operator, string $prepareColumn): SelectQueryBuilder
     {
-        $this->conditions[] = [$column, $operator, " :".$value];
+        $this->conditions[] = [$column, $operator, " :".$prepareColumn];
         return $this;
     }
 
@@ -39,7 +39,10 @@ class SelectQueryBuilder extends AbstractQueryBuilder implements SelectInterface
     }
     public function getQuery(): string
     {
-        $query = "SELECT " . implode(', ', $this->columns) . " FROM " . $this->table;
+        $selectTable = self::getTable();
+        $alias = self::getAlias();
+
+        $query = "SELECT " . implode(', ', $this->columns) . " FROM " . $selectTable;
         if(!empty($this->alias)){
             $query .= " AS {$this->alias}";
         }
@@ -50,8 +53,8 @@ class SelectQueryBuilder extends AbstractQueryBuilder implements SelectInterface
             $operator = $this->joiner['operator'];
             $c_column2 = $this->joiner['column2']; // child
 
-            if($this->alias !== ''){
-                $query .= " {$type} JOIN {$table} ON {$this->alias}.{$p_column1} {$operator} {$table}.{$c_column2}";
+            if($alias !== ''){
+                $query .= " {$type} JOIN {$table} ON {$alias}.{$p_column1} {$operator} {$table}.{$c_column2}";
             } else{
                 $query .= " {$type} JOIN {$table} ON {$p_column1} {$operator} {$table}.{$c_column2}";
             }
