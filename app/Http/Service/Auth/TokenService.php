@@ -14,7 +14,7 @@ class TokenService
     )
     {}
 
-    public function generateTokens(...$payload): Tokens
+    public function generateTokens(...$payload): array
     {
         $data = [];
         foreach ($payload as $value){
@@ -28,23 +28,36 @@ class TokenService
         ];
         $accessToken = JWT::encode($payload, $this->key, 'HS256');
         $refresh = $this->generateRefresh();
-        return new Tokens($accessToken, $refresh);
+        return [
+          'accessToken' => $accessToken,
+          'refreshToken' => $refresh,
+        ];
     }
 
-    public function findToken(string $refreshToken): array
+    public function findToken(string $refreshToken): Tokens|false
     {
-        return $this->tokenRepository->findToken($refreshToken);
+        $token = $this->tokenRepository->findToken($refreshToken);
+        if(! $token){
+            return false;
+        }
+
+        return new Tokens($token['refresh_token'], $token['user_id'], $token['expires_in']);
     }
 
     public function saveToken(string $userId, string $refreshToken, int $expiresIn): bool
     {
-        $token = $this->findToken($refreshToken);
-        if($token){
-            return $this->tokenRepository->updateRefreshToken($refreshToken, $userId);
-        }
         return $this->tokenRepository->saveToken($userId, $refreshToken, $expiresIn);
     }
 
+    public function isTokenTimeExpires(int $expireTime): bool
+    {
+        $current = time();
+        return $current > $expireTime;
+    }
+    public function deleteToken(string $refreshToken): bool
+    {
+        return $this->tokenRepository->deleteRefresh($refreshToken);
+    }
     private function generateRefresh(): string
     {
         return bin2hex(random_bytes(32));

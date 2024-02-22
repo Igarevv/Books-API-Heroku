@@ -6,5 +6,6 @@ interface TokenRepositoryInterface
 {
     public function saveToken(string $userId, string $refreshToken, int $expiresIn): bool;
     public function findToken(string $token): array;
-    public function updateRefreshToken(string $newRefresh, int $user_id);
+    public function updateRefreshToken(string $newRefresh, int $user_id): bool;
+    public function deleteRefresh(string $refreshToken): bool;
 }

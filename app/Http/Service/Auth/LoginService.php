@@ -22,15 +22,9 @@ class LoginService
             $tokens = $this->tokenService->generateTokens($userId,
               $userDto->getRole());
 
-            $refreshToken = $tokens->getRefreshToken();
+            $this->tokenService->saveToken($userId, $tokens['refreshToken'], time() + 604800);
 
-            $this->tokenService->saveToken($userId, $refreshToken, time() + 604800);
-
-            setcookie('_logid', $refreshToken, time() + 604800, path: '/api/auth', httponly: true);
-            return [
-              'accessToken' => $tokens->getAccessToken(),
-              'refreshToken' => $refreshToken,
-            ];
+            return $tokens;
         }
         return false;
     }
@@ -43,22 +37,17 @@ class LoginService
             return false;
         }
 
-        $user = $this->repository->findUserBy('id', $tokenFromDb['user_id']);
-        $role = $user['is_admin'] == 0 ? 'user' : 'admin';
+        $this->tokenService->deleteToken($tokenFromDb->getRefreshToken());
 
-        $userDto = new User($user['id'], $user['name'], $user['email'], $role);
-        $userId = $userDto->getUserId();
+        if($this->tokenService->isTokenTimeExpires($tokenFromDb->getExpiresIn())){
+            return false;
+        }
 
-        $tokens = $this->tokenService->generateTokens($userId,
-          $userDto->getRole());
+        $userDto = $this->findUserById($tokenFromDb->getUserId());
+        $tokens = $this->tokenService->generateTokens($userDto->getUserId(), $userDto->getRole());
+        $this->tokenService->saveToken($userDto->getUserId(), $tokens['refreshToken'], time() + 604800);
 
-        $this->tokenService->saveToken($userId, $refreshToken, time() + 604800);
-
-        setcookie('_logid', $refreshToken, time() + 604800, path: '/api/auth', httponly: true);
-        return [
-          'accessToken' => $tokens->getAccessToken(),
-          'refreshToken' => $refreshToken,
-        ];
+        return $tokens;
     }
     public function isInputFormatValid(array $data): bool
     {
@@ -73,6 +62,14 @@ class LoginService
             return true;
         }
         return false;
+    }
+
+    public function findUserById(int $id): User
+    {
+        $user = $this->repository->findUserBy('id', $id);
+        $role = $user['is_admin'] == 0 ? 'user' : 'admin';
+
+        return new User($user['id'], $user['name'], $user['email'], $role);
     }
 
     public function getUserByEmail(array $data): User|false

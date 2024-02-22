@@ -29,6 +29,7 @@ class LoginController extends Controller
 
         $tokens = $this->loginService->login($userDto, $data['password']);
         if ($tokens !== false) {
+            setcookie('_logid', $tokens['refreshToken'], time() + 604800, path: '/api/auth', httponly: true);
             return new JsonResponse(Response::OK, $tokens);
         }
 
@@ -47,6 +48,7 @@ class LoginController extends Controller
         if(! $newTokens){
             return new JsonResponse(Response::UNAUTHORIZED);
         }
+        setcookie('_logid', $newTokens['refreshToken'], time() + 604800, path: '/api/auth', httponly: true);
         return new JsonResponse(Response::OK, $newTokens);
     }
 }

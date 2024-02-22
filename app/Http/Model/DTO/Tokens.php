@@ -5,18 +5,24 @@ namespace App\Http\Model\DTO;
 class Tokens
 {
     public function __construct(
-      private string $accessToken,
-      private string $refreshToken
+      private string $refreshToken,
+      private int $user_id,
+      private int $expires_in
     ) {}
-
-    public function getAccessToken(): string
-    {
-        return $this->accessToken;
-    }
 
     public function getRefreshToken(): string
     {
         return $this->refreshToken;
+    }
+
+    public function getUserId(): int
+    {
+        return $this->user_id;
+    }
+
+    public function getExpiresIn(): int
+    {
+        return $this->expires_in;
     }
 
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Model\Repository\Token;
 
 use App\Core\Database\DatabaseInterface;
+use App\Core\Database\DeleteQueryBuilder\DeleteQueryBuilder;
 use App\Core\Database\Insert\InsertQueryBuilder;
 use App\Core\Database\Select\SelectQueryBuilder;
 use App\Core\Database\Update\UpdateQueryBuilder;
@@ -33,7 +34,7 @@ class TokenRepository implements TokenRepositoryInterface
     public function findToken(string $token): array
     {
         $sql = SelectQueryBuilder::table($this->table)
-          ->select('user_id')
+          ->select('user_id', 'refresh_token', 'expires_in')
           ->where('refresh_token', '=', 'refresh_token')
           ->getQuery();
 
@@ -50,9 +51,16 @@ class TokenRepository implements TokenRepositoryInterface
           ->getQuery();
 
         $stmt = $this->database->execute($sql, [':user_id' => $user_id]);
-        if($stmt !== false){
-            return true;
-        }
-        return false;
+
+        return $stmt !== false;
+    }
+    public function deleteRefresh(string $refreshToken): bool
+    {
+        $sql = DeleteQueryBuilder::table($this->table)
+          ->where('refresh_token', '=', 'refresh_token')
+          ->getQuery();
+        $stmt = $this->database->execute($sql, [':refresh_token' => $refreshToken]);
+
+        return $stmt !== false;
     }
 }
