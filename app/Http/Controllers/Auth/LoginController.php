@@ -4,31 +4,51 @@ namespace App\Http\Controllers\Auth;
 
 use App\Core\Controller\Controller;
 use App\Core\Http\Request\RequestInterface;
-use App\Core\Http\Response\ResponseInterface;
-use App\Http\Model\User\UserModel;
+use App\Core\Http\Response\JsonResponse;
+use App\Core\Http\Response\Response;
 use App\Http\Service\Auth\LoginService;
 
 class LoginController extends Controller
 {
-
     public function __construct(
-      protected ResponseInterface $response,
       protected LoginService $loginService
     ) {}
 
-    public function login(RequestInterface $request)
+    public function login(RequestInterface $request): JsonResponse
     {
         $data = $request->input();
-        $userDto = $this->loginService->getUserDTO($data);
 
-        if (! $userDto) {
-            $this->response
-              ->status(ResponseInterface::NOT_FOUND)
-              ->message('User not found')
-              ->send();
+        if(! $this->loginService->isInputFormatValid($data)){
+            return new JsonResponse(Response::BAD_REQUEST);
         }
 
-        $this->loginService->login($userDto, $data['password']);
+        $userDto = $this->loginService->getUserByEmail($data);
+        if (! $userDto) {
+            return new JsonResponse(Response::NOT_FOUND);
+        }
+
+        $tokens = $this->loginService->login($userDto, $data['password']);
+        if ($tokens !== false) {
+            setcookie('_logid', $tokens['refreshToken'], time() + 604800, path: '/api/auth', httponly: true);
+            return new JsonResponse(Response::OK, $tokens);
+        }
+
+        return new JsonResponse(Response::OK,
+          ['errors' => 'Wrong email or password']);
     }
 
+    public function refresh(RequestInterface $request)
+    {
+        $token = $request->cookie['_logid'];
+
+        if(! $token){
+            return new JsonResponse(Response::UNAUTHORIZED);
+        }
+        $newTokens = $this->loginService->refresh($token);
+        if(! $newTokens){
+            return new JsonResponse(Response::UNAUTHORIZED);
+        }
+        setcookie('_logid', $newTokens['refreshToken'], time() + 604800, path: '/api/auth', httponly: true);
+        return new JsonResponse(Response::OK, $newTokens);
+    }
 }

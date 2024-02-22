@@ -4,42 +4,36 @@ namespace App\Http\Controllers\Auth;
 
 use App\Core\Controller\Controller;
 use App\Core\Http\Request\RequestInterface;
-use App\Core\Http\Response\ResponseInterface;
+use App\Core\Http\Response\JsonResponse;
+use App\Core\Http\Response\Response;
 use App\Http\Service\Auth\RegisterService;
 
 class RegisterController extends Controller
 {
-
     protected array $userData = [];
 
     public function __construct(
       protected RegisterService $registerService,
-      protected ResponseInterface $response
     ) {}
 
-    public function register(RequestInterface $request): void
+    public function register(RequestInterface $request): JsonResponse
     {
         $this->userData = $request->input();
 
         if (! $this->userData) {
-            $this->response
-              ->status(ResponseInterface::UNPROCESSABLE)
-              ->message('Unprocessable data')
-              ->send();
+            return new JsonResponse(Response::UNPROCESSABLE);
         }
         if (! $this->registerService->validate($this->userData)) {
-            $this->response
-              ->status(ResponseInterface::BAD_REQUEST)
-              ->message('Bad request')
-              ->data($this->registerService->errors(), true)
-              ->send();
+            return new JsonResponse(Response::BAD_REQUEST,
+              $this->registerService->errors()
+            );
         }
 
-        $created = $this->registerService->insertData($this->userData);
-        if ($created) {
-            $this->response->status(ResponseInterface::CREATED)
-              ->message('Successfully created')
-              ->send();
+        $created = $this->registerService->createUser($this->userData);
+
+        if (! $created) {
+            return new JsonResponse(Response::SERVER_ERROR);
         }
+        return new JsonResponse(Response::CREATED);
     }
 }

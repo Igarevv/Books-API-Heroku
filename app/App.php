@@ -13,23 +13,20 @@ class App
 {
 
     private RequestInterface $request;
-
     private static DatabaseInterface $db;
-
     public function __construct(
       protected Container $container,
       protected Router $router,
       protected Config $config
     ) {
-        static::$db = new Database($this->config);
         $this->getBindings();
+        static::$db = $this->container->get(DatabaseInterface::class);
     }
 
     public static function db(): DatabaseInterface
     {
         return static::$db;
     }
-
     public function run()
     {
         $this->request = $this->container->get(RequestInterface::class);

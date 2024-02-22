@@ -2,14 +2,13 @@
 
 namespace App\Core\Routes;
 
-use App\Core\Controller\Controller;
-
 class RouteConfiguration
 {
 
     public string $route;
     private string $controllerName;
     private string $index;
+    private ?string $middleware = null;
 
     public function __construct(string $route, string $controllerName, string $index)
     {
@@ -18,9 +17,9 @@ class RouteConfiguration
         $this->index = $index;
     }
 
-    public function middleware(array $middleware): RouteConfiguration
+    public function middleware(string $middleware): RouteConfiguration
     {
-        //
+        $this->middleware = $middleware;
         return $this;
     }
 
@@ -32,6 +31,11 @@ class RouteConfiguration
     public function getControllerName(): string
     {
         return $this->controllerName;
+    }
+
+    public function getMiddleware(): ?string
+    {
+        return $this->middleware;
     }
 
 }

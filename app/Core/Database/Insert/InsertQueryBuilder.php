@@ -20,9 +20,10 @@ class InsertQueryBuilder extends AbstractQueryBuilder
             throw new \InvalidArgumentException("Table name and values are required.");
         }
 
+        $table = self::getTable();
         $columns = implode(', ', $this->values);
         $placeholder = implode(', ', array_map(fn($key) => ":{$key}", $this->values));
-        return "INSERT INTO {$this->table}({$columns}) VALUES({$placeholder})";
+        return "INSERT INTO {$table}({$columns}) VALUES({$placeholder})";
     }
 
 }
