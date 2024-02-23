@@ -4,14 +4,16 @@ namespace App\Core\Http\Response;
 
 class JsonResponse extends Response implements ResponseInterface
 {
-    private int $status;
+    protected int $status;
 
-    private array $body;
+    protected mixed $body;
 
-    public function __construct($status, array $body = [])
+    protected bool $isError;
+    public function __construct($status, mixed $body = [], bool $isError = false)
     {
         $this->status = $status;
         $this->body = $body;
+        $this->isError = $isError;
         return $this;
     }
 
@@ -20,16 +22,18 @@ class JsonResponse extends Response implements ResponseInterface
         http_response_code($this->status);
         header("Content-Type: application/json");
 
+        $field = $this->isError ? 'errors' : (is_array($this->body) ? 'data' : 'message');
+
         if(! $this->body){
             $response = [
               'status' => $this->status,
-              'message' => self::HTTP_STATUS_MESSAGE[$this->status],
+              'HTTP-message' => self::HTTP_STATUS_MESSAGE[$this->status]
             ];
-        }else{
+        } else{
             $response = [
               'status' => $this->status,
-              'message' => self::HTTP_STATUS_MESSAGE[$this->status],
-              'data' => $this->body
+              'HTTP-message' => self::HTTP_STATUS_MESSAGE[$this->status],
+              $field => $this->body
             ];
         }
 

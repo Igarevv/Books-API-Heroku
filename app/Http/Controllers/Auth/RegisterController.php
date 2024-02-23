@@ -6,11 +6,11 @@ use App\Core\Controller\Controller;
 use App\Core\Http\Request\RequestInterface;
 use App\Core\Http\Response\JsonResponse;
 use App\Core\Http\Response\Response;
+use App\Http\Exceptions\DataException;
 use App\Http\Service\Auth\RegisterService;
 
 class RegisterController extends Controller
 {
-    protected array $userData = [];
 
     public function __construct(
       protected RegisterService $registerService,
@@ -18,22 +18,19 @@ class RegisterController extends Controller
 
     public function register(RequestInterface $request): JsonResponse
     {
-        $this->userData = $request->input();
+        $userData = $request->input();
+        try {
+            if (! $this->registerService->validate($userData)) {
+                return new JsonResponse(Response::BAD_REQUEST,
+                  $this->registerService->errors()
+                );
+            }
 
-        if (! $this->userData) {
-            return new JsonResponse(Response::UNPROCESSABLE);
-        }
-        if (! $this->registerService->validate($this->userData)) {
-            return new JsonResponse(Response::BAD_REQUEST,
-              $this->registerService->errors()
-            );
-        }
+            $this->registerService->createUser($userData);
 
-        $created = $this->registerService->createUser($this->userData);
-
-        if (! $created) {
-            return new JsonResponse(Response::SERVER_ERROR);
+            return new JsonResponse(Response::CREATED);
+        } catch (DataException $e) {
+            return new JsonResponse($e->getCode(), $e->getMessage());
         }
-        return new JsonResponse(Response::CREATED);
     }
 }

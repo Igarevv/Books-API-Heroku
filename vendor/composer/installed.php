@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'f6816cbff1f865d4941850134875a65e18e162d3',
+        'reference' => '87b87f748dae92b2ff69e2215f23f87335e3cd76',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'f6816cbff1f865d4941850134875a65e18e162d3',
+            'reference' => '87b87f748dae92b2ff69e2215f23f87335e3cd76',
             'dev_requirement' => false,
         ),
         'brick/math' => array(
@@ -78,6 +78,15 @@
             'aliases' => array(),
             'reference' => '7c3aff79d10325257a001fcf92d991f24fc967cf',
             'dev_requirement' => true,
+        ),
+        'symfony/dotenv' => array(
+            'pretty_version' => 'v6.4.3',
+            'version' => '6.4.3.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/dotenv',
+            'aliases' => array(),
+            'reference' => '3cb7ca997124760ed1389d5341806247670f4ef8',
+            'dev_requirement' => false,
         ),
         'symfony/polyfill-mbstring' => array(
             'pretty_version' => 'v1.29.0',

@@ -8,7 +8,6 @@ use Firebase\JWT\Key;
 
 class JWTHelper
 {
-    private string $key = 'my-secret-key'; // в .env в будущем
     public function validateAccessToken(RequestInterface $request): \stdClass|bool
     {
         $token = $this->bearerToken($request);
@@ -16,7 +15,7 @@ class JWTHelper
             return false;
         }
         try{
-            return JWT::decode($token, new Key($this->key, 'HS256'));
+            return JWT::decode($token, new Key($_ENV['JWTKEY'], 'HS256'));
         }catch (\Exception $e){
             return false;
         }
