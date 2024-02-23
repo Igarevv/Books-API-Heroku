@@ -3,8 +3,10 @@
 namespace App\Http\Service\Auth;
 
 use App\Core\Validator\ValidatorInterface;
+use App\Http\Exceptions\DataException;
 use App\Http\Model\Repository\User\UserRepositoryInterface;
 use App\Http\Service\FieldValidationService;
+use Symfony\Component\VarDumper\Cloner\Data;
 
 class RegisterService
 {
@@ -21,21 +23,25 @@ class RegisterService
         $this->validator = $validator;
     }
 
+    /**
+     * @throws \App\Http\Exceptions\DataException
+     */
     public function validate(array $userData): bool
     {
         $rules = [
           'name' => ['required', 'max:255', 'alphanumeric'],
           'email' => ['email', 'unique:User'],
-          'password' => ['required'],
+          'password' => ['required', 'min:8'],
         ];
 
-        $registerValidationService = new FieldValidationService();
-        if ( ! $registerValidationService->checkFields($userData, $rules)) {
-            return false;
+        $validateFields = (new FieldValidationService())->checkFields($userData, $rules);
+
+        if (! $validateFields) {
+           throw DataException::unprocessable();
         }
 
         $validation = $this->validator->validate($userData, $rules);
-        if ( ! $validation) {
+        if (! $validation) {
             return false;
         }
         return true;

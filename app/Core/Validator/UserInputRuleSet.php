@@ -93,7 +93,7 @@ class UserInputRuleSet
      */
     protected function max(string $data, int $value): bool
     {
-        if (mb_strlen($data) < $value) {
+        if (mb_strlen($data) <= $value) {
             return true;
         }
         return false;
@@ -107,7 +107,7 @@ class UserInputRuleSet
      */
     protected function min(string $data, int $value): bool
     {
-        if (mb_strlen($data) > $value) {
+        if (mb_strlen($data) >= $value) {
             return true;
         }
         return false;

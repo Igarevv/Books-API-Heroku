@@ -18,6 +18,7 @@ class ComposerStaticInit4962fa58032eeae9de2f4952eae5e003
         array (
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Component\\VarDumper\\' => 28,
+            'Symfony\\Component\\Dotenv\\' => 25,
         ),
         'R' => 
         array (
@@ -50,6 +51,10 @@ class ComposerStaticInit4962fa58032eeae9de2f4952eae5e003
         'Symfony\\Component\\VarDumper\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/var-dumper',
+        ),
+        'Symfony\\Component\\Dotenv\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/dotenv',
         ),
         'Ramsey\\Uuid\\' => 
         array (

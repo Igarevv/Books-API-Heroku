@@ -6,10 +6,13 @@ use App\Core\Controller\Controller;
 use App\Core\Http\Request\RequestInterface;
 use App\Core\Http\Response\JsonResponse;
 use App\Core\Http\Response\Response;
+use App\Http\Exceptions\LoginException;
+use App\Http\Exceptions\UserNotFoundException;
 use App\Http\Service\Auth\LoginService;
 
 class LoginController extends Controller
 {
+
     public function __construct(
       protected LoginService $loginService
     ) {}
@@ -17,38 +20,32 @@ class LoginController extends Controller
     public function login(RequestInterface $request): JsonResponse
     {
         $data = $request->input();
+        try {
+            $userDto = $this->loginService->getUserByEmail($data);
 
-        if(! $this->loginService->isInputFormatValid($data)){
-            return new JsonResponse(Response::BAD_REQUEST);
-        }
+            $tokens = $this->loginService->login($userDto, $data['password']);
 
-        $userDto = $this->loginService->getUserByEmail($data);
-        if (! $userDto) {
-            return new JsonResponse(Response::NOT_FOUND);
-        }
+            setcookie('_logid', $tokens['refreshToken'], $_ENV['REFRESH_LIVE_TIME'],
+              path: '/api/auth', httponly: true);
 
-        $tokens = $this->loginService->login($userDto, $data['password']);
-        if ($tokens !== false) {
-            setcookie('_logid', $tokens['refreshToken'], time() + 604800, path: '/api/auth', httponly: true);
             return new JsonResponse(Response::OK, $tokens);
+        } catch (LoginException|UserNotFoundException $e) {
+            return new JsonResponse($e->getCode(), $e->getMessage());
         }
-
-        return new JsonResponse(Response::OK,
-          ['errors' => 'Wrong email or password']);
     }
 
     public function refresh(RequestInterface $request)
     {
-        $token = $request->cookie['_logid'];
+        $token = $request->cookie['_logid'] ?? '';
+        try {
+            $newTokens = $this->loginService->refresh($token);
 
-        if(! $token){
-            return new JsonResponse(Response::UNAUTHORIZED);
+            setcookie('_logid', $newTokens['refreshToken'], $_ENV['REFRESH_LIVE_TIME'],
+              path: '/api/auth', httponly: true);
+
+            return new JsonResponse(Response::OK, $newTokens);
+        } catch (LoginException $e) {
+            return new JsonResponse($e->getCode(), $e->getMessage());
         }
-        $newTokens = $this->loginService->refresh($token);
-        if(! $newTokens){
-            return new JsonResponse(Response::UNAUTHORIZED);
-        }
-        setcookie('_logid', $newTokens['refreshToken'], time() + 604800, path: '/api/auth', httponly: true);
-        return new JsonResponse(Response::OK, $newTokens);
     }
 }

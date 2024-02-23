@@ -8,7 +8,6 @@ use Firebase\JWT\JWT;
 
 class TokenService
 {
-    private string $key = 'my-secret-key'; // в .env в будущем
     public function __construct(
       private TokenRepositoryInterface $tokenRepository
     )
@@ -26,7 +25,7 @@ class TokenService
           'exp'  => time() + 900,
           'data' => $data,
         ];
-        $accessToken = JWT::encode($payload, $this->key, 'HS256');
+        $accessToken = JWT::encode($payload, $_ENV['JWTKEY'], 'HS256');
         $refresh = $this->generateRefresh();
         return [
           'accessToken' => $accessToken,
@@ -37,7 +36,7 @@ class TokenService
     public function findToken(string $refreshToken): Tokens|false
     {
         $token = $this->tokenRepository->findToken($refreshToken);
-        if(! $token){
+        if(! $token || password_verify($refreshToken, $token['refresh_token'])){
             return false;
         }
 
@@ -51,8 +50,7 @@ class TokenService
 
     public function isTokenTimeExpires(int $expireTime): bool
     {
-        $current = time();
-        return $current > $expireTime;
+        return time() > $expireTime;
     }
     public function deleteToken(string $refreshToken): bool
     {
@@ -60,6 +58,6 @@ class TokenService
     }
     private function generateRefresh(): string
     {
-        return bin2hex(random_bytes(32));
+        return password_hash(bin2hex(random_bytes(32)), PASSWORD_DEFAULT);
     }
 }

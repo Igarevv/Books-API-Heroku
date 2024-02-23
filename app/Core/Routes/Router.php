@@ -52,7 +52,7 @@ class Router implements RouteInterface
 
             if($result == null){
                 $this->response = new JsonResponse(Response::OK);
-            }else {
+            } else{
                 $this->response = $result;
             }
         }
@@ -86,9 +86,9 @@ class Router implements RouteInterface
         return false;
     }
 
-    private function getRoutesFromConfig()
+    private function getRoutesFromConfig(): void
     {
-        return require_once APP_PATH.'/configs/routes.php';
+        require_once APP_PATH.'/configs/routes.php';
     }
 
 }
