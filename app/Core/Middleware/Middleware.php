@@ -7,7 +7,7 @@ use App\Http\Middleware\AuthMiddleware;
 
 class Middleware
 {
-    const MAP = [
+    public const MAP = [
       'auth' => AuthMiddleware::class,
     ];
     public static function resolve(string $key): string

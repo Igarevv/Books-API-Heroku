@@ -12,5 +12,6 @@ return [
   Route::post('/api/auth/login', [LoginController::class, 'login']),
   Route::post('/api/auth/register', [RegisterController::class, 'register']),
   Route::post('/api/auth/refresh-tokens', [LoginController::class, 'refresh']),
+  Route::post('/api/auth/logout', [LoginController::class, 'logout']),
   Route::get('/api/show', [HomeController::class, 'index'])->middleware('auth')
 ];

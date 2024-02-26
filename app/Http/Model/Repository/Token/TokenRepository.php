@@ -26,10 +26,7 @@ class TokenRepository implements TokenRepositoryInterface
           ':refresh_token' => $refreshToken,
           ':expires_in' => $expiresIn,
         ]);
-        if($result !== false){
-            return true;
-        }
-        return false;
+        return $result !== false;
     }
     public function findToken(string $token): array
     {

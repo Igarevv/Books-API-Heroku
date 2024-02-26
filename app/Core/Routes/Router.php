@@ -15,18 +15,14 @@ class Router implements RouteInterface
 
     private ResponseInterface $response;
 
-    private RequestInterface $request;
-
     public function __construct(
-      private Container $container
+      private readonly Container $container
     ) {
         $this->getRoutesFromConfig();
     }
 
     public function dispatch(string $uri, string $httpMethod, RequestInterface $request): void
     {
-        $this->request = $request;
-
         $route = $this->findRoute($uri, $httpMethod);
 
         if (! $route) {
@@ -37,20 +33,19 @@ class Router implements RouteInterface
 
         if ($middleware) {
             $middleware = Middleware::resolve($middleware);
-            (new $middleware($this->request))->handle();
+            (new $middleware($request))->handle();
         }
 
-        if ($httpMethod === 'POST' && $this->request->server['CONTENT_TYPE'] == 'application/json') {
-            $this->request->setJsonData(JsonParser::request());
+        if ($httpMethod === 'POST' && $request->server['CONTENT_TYPE'] === 'application/json') {
+            $request->setJsonData(JsonParser::request());
         }
 
         if ($this->isValidRoute($controllerName, $controllerMethod)) {
             $controller = $this->container->get($controllerName);
 
-            $result = call_user_func_array([$controller, $controllerMethod],
-              [$this->request, ...$requestParams]);
+            $result = $controller->$controllerMethod($request, ...$requestParams);
 
-            if($result == null){
+            if($result === null){
                 $this->response = new JsonResponse(Response::OK);
             } else{
                 $this->response = $result;
@@ -79,11 +74,8 @@ class Router implements RouteInterface
       ?string $controllerName,
       ?string $controllerMethod
     ): bool {
-        if (class_exists($controllerName) && method_exists($controllerName,
-            $controllerMethod)) {
-            return true;
-        }
-        return false;
+        return class_exists($controllerName) && method_exists($controllerName,
+            $controllerMethod);
     }
 
     private function getRoutesFromConfig(): void

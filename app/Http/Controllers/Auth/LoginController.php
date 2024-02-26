@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Core\Controller\Controller;
+use App\Core\Cookie\Cookie;
 use App\Core\Http\Request\RequestInterface;
 use App\Core\Http\Response\JsonResponse;
 use App\Core\Http\Response\Response;
@@ -25,27 +26,33 @@ class LoginController extends Controller
 
             $tokens = $this->loginService->login($userDto, $data['password']);
 
-            setcookie('_logid', $tokens['refreshToken'], $_ENV['REFRESH_LIVE_TIME'],
-              path: '/api/auth', httponly: true);
-
             return new JsonResponse(Response::OK, $tokens);
         } catch (LoginException|UserNotFoundException $e) {
             return new JsonResponse($e->getCode(), $e->getMessage());
         }
     }
 
-    public function refresh(RequestInterface $request)
+    public function refresh(RequestInterface $request): JsonResponse
     {
         $token = $request->cookie['_logid'] ?? '';
         try {
             $newTokens = $this->loginService->refresh($token);
 
-            setcookie('_logid', $newTokens['refreshToken'], $_ENV['REFRESH_LIVE_TIME'],
-              path: '/api/auth', httponly: true);
-
             return new JsonResponse(Response::OK, $newTokens);
         } catch (LoginException $e) {
             return new JsonResponse($e->getCode(), $e->getMessage());
         }
+    }
+
+    public function logout(RequestInterface $request): JsonResponse
+    {
+        $token = $request->cookie['_logid'] ?? '';
+        if(! $token){
+            return new JsonResponse(Response::UNAUTHORIZED);
+        }
+
+        $this->loginService->logout($token);
+
+        return new JsonResponse(Response::OK, 'See you');
     }
 }

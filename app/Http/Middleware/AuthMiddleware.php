@@ -8,7 +8,7 @@ use App\Core\Http\Response\Response;
 
 class AuthMiddleware extends AbstractMiddleware
 {
-    public function handle()
+    public function handle(): void
     {
         $token = (new JWTHelper())->validateAccessToken($this->request);
         if(! $token){

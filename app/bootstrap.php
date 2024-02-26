@@ -4,8 +4,6 @@ use App\Core\Database\Database;
 use App\Core\Database\DatabaseInterface;
 use App\Core\Http\Request\Request;
 use App\Core\Http\Request\RequestInterface;
-use App\Core\Http\Response\JsonResponse;
-use App\Core\Http\Response\ResponseInterface;
 use App\Core\Validator\Validator;
 use App\Core\Validator\ValidatorInterface;
 use App\Http\Model\Repository\Token\TokenRepository;

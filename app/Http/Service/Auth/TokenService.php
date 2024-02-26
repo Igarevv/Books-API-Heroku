@@ -9,7 +9,7 @@ use Firebase\JWT\JWT;
 class TokenService
 {
     public function __construct(
-      private TokenRepositoryInterface $tokenRepository
+      private readonly TokenRepositoryInterface $tokenRepository
     )
     {}
 
@@ -58,6 +58,6 @@ class TokenService
     }
     private function generateRefresh(): string
     {
-        return password_hash(bin2hex(random_bytes(32)), PASSWORD_DEFAULT);
+        return bin2hex(random_bytes(32));
     }
 }

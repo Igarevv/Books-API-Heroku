@@ -3,7 +3,6 @@
 namespace App\Core\Validator;
 
 use App\App;
-use App\Http\Model\User\UserModel;
 
 class UserInputRuleSet
 {
@@ -52,10 +51,7 @@ class UserInputRuleSet
      */
     protected function required(?string $data): bool
     {
-        if (! is_null($data) || trim($data) !== '') {
-            return true;
-        }
-        return false;
+        return ! is_null($data) || trim($data) !== '';
     }
 
     /**
@@ -93,10 +89,7 @@ class UserInputRuleSet
      */
     protected function max(string $data, int $value): bool
     {
-        if (mb_strlen($data) <= $value) {
-            return true;
-        }
-        return false;
+        return mb_strlen($data) <= $value;
     }
 
     /**
@@ -107,10 +100,7 @@ class UserInputRuleSet
      */
     protected function min(string $data, int $value): bool
     {
-        if (mb_strlen($data) >= $value) {
-            return true;
-        }
-        return false;
+        return mb_strlen($data) >= $value;
     }
 
     /**

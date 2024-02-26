@@ -39,6 +39,7 @@ class ComposerStaticInit4962fa58032eeae9de2f4952eae5e003
         ),
         'A' => 
         array (
+            'App\\RoleManagement\\' => 19,
             'App\\' => 4,
         ),
     );
@@ -75,6 +76,10 @@ class ComposerStaticInit4962fa58032eeae9de2f4952eae5e003
         'Brick\\Math\\' => 
         array (
             0 => __DIR__ . '/..' . '/brick/math/src',
+        ),
+        'App\\RoleManagement\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/app/RoleManagement',
         ),
         'App\\' => 
         array (

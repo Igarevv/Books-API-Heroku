@@ -39,9 +39,9 @@ class Request implements RequestInterface, JsonRequestInterface
     public function input(string $key = null, $default = null): mixed
     {
         if(! empty($this->jsonData)){
-            return $key == null ? $this->jsonData : $this->inputJsonData($key);
+            return $key === null ? $this->jsonData : $this->inputJsonData($key);
         }
-        if($key == null){
+        if($key === null){
             return $this->post;
         }
         return [$key => $this->post[$key]] ?? [$key => $this->get] ?? $default;

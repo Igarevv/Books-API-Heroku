@@ -3,7 +3,11 @@
 namespace App\Core\Container;
 
 use App\Http\Exceptions\ContainerException;
+use Exception;
 use Psr\Container\ContainerInterface;
+use ReflectionException;
+use ReflectionNamedType;
+use ReflectionParameter;
 
 class Container implements ContainerInterface
 {
@@ -36,12 +40,12 @@ class Container implements ContainerInterface
     {
         try {
             $reflection = new \ReflectionClass($className);
-        } catch (\ReflectionException $e) {
-            throw new \ReflectionException($e->getMessage(), $e->getCode(), $e);
+        } catch (ReflectionException $e) {
+            throw new ReflectionException($e->getMessage(), $e->getCode(), $e);
         }
 
         if ( ! $reflection->isInstantiable()) {
-            throw new \Exception("Class {$className} is not instantiable");
+            throw new Exception("Class {$className} is not instantiable");
         }
 
         $constructor = $reflection->getConstructor();
@@ -56,7 +60,7 @@ class Container implements ContainerInterface
             return new $className();
         }
 
-        $dependencies = array_map(function (\ReflectionParameter $param) use (
+        $dependencies = array_map(function (ReflectionParameter $param) use (
           $className
         ) {
             $name = $param->getName();
@@ -67,7 +71,7 @@ class Container implements ContainerInterface
                 parameter {$name} is missing a type hint.");
             }
 
-            if ($type instanceof \ReflectionNamedType) {
+            if ($type instanceof ReflectionNamedType) {
                 return $this->get($type->getName());
             }
 
