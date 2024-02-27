@@ -8,7 +8,7 @@ use App\Core\Http\Request\RequestInterface;
 use App\Core\Http\Response\JsonResponse;
 use App\Core\Http\Response\Response;
 use App\Http\Exceptions\LoginException;
-use App\Http\Exceptions\UserNotFoundException;
+use App\Http\Exceptions\NotFoundException;
 use App\Http\Service\Auth\LoginService;
 
 class LoginController extends Controller
@@ -27,7 +27,7 @@ class LoginController extends Controller
             $tokens = $this->loginService->login($userDto, $data['password']);
 
             return new JsonResponse(Response::OK, $tokens);
-        } catch (LoginException|UserNotFoundException $e) {
+        } catch (LoginException|NotFoundException $e) {
             return new JsonResponse($e->getCode(), $e->getMessage());
         }
     }

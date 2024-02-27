@@ -8,6 +8,6 @@ class DataException extends \Exception
 
     public static function unprocessable(): static
     {
-        return new static('Please enter required fields', Response::UNPROCESSABLE);
+        return new static('Please, check the spelling of the fields name.', Response::UNPROCESSABLE);
     }
 }

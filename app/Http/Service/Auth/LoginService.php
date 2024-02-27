@@ -4,7 +4,7 @@ namespace App\Http\Service\Auth;
 
 use App\Core\Cookie\Cookie;
 use App\Http\Exceptions\LoginException;
-use App\Http\Exceptions\UserNotFoundException;
+use App\Http\Exceptions\NotFoundException;
 use App\Http\Model\DTO\User;
 use App\Http\Model\Repository\User\UserRepositoryInterface;
 use App\Http\Service\FieldValidationService;
@@ -84,9 +84,7 @@ class LoginService
             return false;
         }
 
-        $validateField = (new FieldValidationService())->checkFields($data, [
-          'email', 'password',
-        ]);
+        $validateField = FieldValidationService::checkFields($data, ['email', 'password']);
 
         if ($validateField) {
             return true;
@@ -103,7 +101,7 @@ class LoginService
     }
 
     /**
-     * @throws \App\Http\Exceptions\UserNotFoundException
+     * @throws \App\Http\Exceptions\NotFoundException
      * @throws \App\Http\Exceptions\LoginException
      */
     public function getUserByEmail(array $data): User
@@ -116,7 +114,7 @@ class LoginService
           $data['email']);
 
         if (! $this->userData) {
-            throw UserNotFoundException::userNotFound();
+            throw NotFoundException::userNotFound();
         }
         $role = $this->userData['is_admin'] === 0 ? 'user' : 'admin';
 

@@ -58,7 +58,10 @@ class Database implements DatabaseInterface
             exit("Database connection failed: {$e->getMessage()}");
         }
     }
-
+    public function lastInsertedId(): false|string
+    {
+        return $this->pdo->lastInsertId();
+    }
     public function prepare(string $sql): \PDOStatement
     {
         return $this->pdo->prepare($sql);
