@@ -27,17 +27,17 @@ abstract class Response
     const SERVER_ERROR  = 500;
 
     protected const HTTP_STATUS_MESSAGE = [
-      '200' => '200 | OK',
-      '201' => '201 | Created',
-      '204' => '204 | No Content',
-      '301' => '301 | Moved',
-      '304' => '304 | Not Modified',
-      '400' => '400 | Bad Request',
-      '401' => '401 | Unauthorized',
-      '403' => '403 | Forbidden',
-      '404' => '404 | Not Found',
-      '422' => '422 | Unprocessable Entity',
-      '500' => '500 | Server Error',
+      200 => "200 | OK",
+      201 => "201 | Created",
+      204 => "204 | No Content",
+      301 => "301 | Moved",
+      304 => "304 | Not Modified",
+      400 => "400 | Bad Request",
+      401 => "401 | Unauthorized",
+      403 => "403 | Forbidden",
+      404 => "404 | Not Found",
+      422 => "422 | Unprocessable Entity",
+      500 => "500 | Server Error",
     ];
-    public abstract function send(): void;
+    abstract public function send(): void;
 }

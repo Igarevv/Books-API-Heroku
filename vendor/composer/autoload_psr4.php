@@ -14,5 +14,6 @@ return array(
     'Psr\\Container\\' => array($vendorDir . '/psr/container/src'),
     'Firebase\\JWT\\' => array($vendorDir . '/firebase/php-jwt/src'),
     'Brick\\Math\\' => array($vendorDir . '/brick/math/src'),
+    'App\\RoleManagement\\' => array($baseDir . '/app/RoleManagement'),
     'App\\' => array($baseDir . '/app'),
 );

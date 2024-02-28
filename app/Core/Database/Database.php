@@ -22,8 +22,20 @@ class Database implements DatabaseInterface
     {
         $this->disconnect();
     }
+    public function execute(string $sql, array $parameters = []): \PDOStatement|false
+    {
+        $statement = $this->prepare($sql);
 
-    public function connect(): void
+        foreach ($parameters as $key => $parameter){
+            $statement->bindValue($key, $parameter);
+        }
+
+        if($statement->execute()){
+            return $statement;
+        }
+        return false;
+    }
+    private function connect(): void
     {
         $driver = $this->config->get('database.driver');
         $host = $this->config->get('database.host');
@@ -46,24 +58,25 @@ class Database implements DatabaseInterface
             exit("Database connection failed: {$e->getMessage()}");
         }
     }
-
-    private function prepare(string $sql): \PDOStatement
+    public function lastInsertedId(): false|string
+    {
+        return $this->pdo->lastInsertId();
+    }
+    public function beginTransaction(): void
+    {
+        $this->pdo->beginTransaction();
+    }
+    public function commitTransaction(): void
+    {
+        $this->pdo->commit();
+    }
+    public function rollBack(): void
+    {
+        $this->pdo->rollBack();
+    }
+    public function prepare(string $sql): \PDOStatement
     {
         return $this->pdo->prepare($sql);
-    }
-
-    public function execute(string $sql, array $parameters = []): \PDOStatement|false
-    {
-        $statement = $this->prepare($sql);
-
-        foreach ($parameters as $key => $parameter){
-            $statement->bindValue($key, $parameter);
-        }
-
-        if($statement->execute()){
-            return $statement;
-        }
-        return false;
     }
     private function disconnect(): void
     {

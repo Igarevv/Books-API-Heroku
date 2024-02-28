@@ -39,12 +39,6 @@ class Route
         return $routeHandler;
     }
 
-    public static function redirect(string $uri)
-    {
-        header("Location: {$uri}", 303);
-        exit;
-    }
-
     public static function getRoutes(string $method): array
     {
         return self::$routes[$method];

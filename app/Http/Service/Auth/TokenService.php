@@ -9,16 +9,12 @@ use Firebase\JWT\JWT;
 class TokenService
 {
     public function __construct(
-      private TokenRepositoryInterface $tokenRepository
+      private readonly TokenRepositoryInterface $tokenRepository
     )
     {}
 
-    public function generateTokens(...$payload): array
+    public function generateTokens(array $data): array
     {
-        $data = [];
-        foreach ($payload as $value){
-            $data['data'] = $value;
-        }
         $payload = [
           'iss'  => 'http://api.books.com',
           'iat'  => time(),
@@ -58,6 +54,6 @@ class TokenService
     }
     private function generateRefresh(): string
     {
-        return password_hash(bin2hex(random_bytes(32)), PASSWORD_DEFAULT);
+        return bin2hex(random_bytes(32));
     }
 }

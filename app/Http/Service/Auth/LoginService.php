@@ -2,10 +2,9 @@
 
 namespace App\Http\Service\Auth;
 
-use App\Core\Http\Response\JsonResponse;
-use App\Core\Http\Response\Response;
+use App\Core\Cookie\Cookie;
 use App\Http\Exceptions\LoginException;
-use App\Http\Exceptions\UserNotFoundException;
+use App\Http\Exceptions\NotFoundException;
 use App\Http\Model\DTO\User;
 use App\Http\Model\Repository\User\UserRepositoryInterface;
 use App\Http\Service\FieldValidationService;
@@ -16,8 +15,8 @@ class LoginService
     private array $userData = [];
 
     public function __construct(
-      private UserRepositoryInterface $repository,
-      private TokenService $tokenService,
+      private readonly UserRepositoryInterface $repository,
+      private readonly TokenService $tokenService,
     ) {}
 
     /**
@@ -25,15 +24,23 @@ class LoginService
      */
     public function login(User $userDto, string $password): array
     {
-        if ( ! password_verify($password, $this->userData['password'])) {
+        if (! password_verify($password, $this->userData['password'])) {
             throw LoginException::wrongPassword();
         }
+
         $userId = $userDto->getUserId();
-        $tokens = $this->tokenService->generateTokens($userId,
-          $userDto->getRole());
+
+        $data = [
+          'user_id' => $userDto->getUserId(),
+          'role'    => $userDto->getRole()
+        ];
+        $tokens = $this->tokenService->generateTokens($data);
 
         $this->tokenService->saveToken($userId, $tokens['refreshToken'],
-          $_ENV['REFRESH_LIVE_TIME']);
+          time() + $_ENV['REFRESH_LIVE_TIME']);
+
+        Cookie::set('_logid', $tokens['refreshToken'],
+          $_ENV['REFRESH_LIVE_TIME'], '/api/auth');
 
         return $tokens;
     }
@@ -56,25 +63,33 @@ class LoginService
         }
 
         $userDto = $this->findUserById($tokenFromDb->getUserId());
-
-        $tokens = $this->tokenService->generateTokens($userDto->getUserId(),
-          $userDto->getRole());
+        $data = [
+          'user_id' => $userDto->getUserId(),
+          'role'    => $userDto->getRole()
+        ];
+        $tokens = $this->tokenService->generateTokens($data);
 
         $this->tokenService->saveToken($userDto->getUserId(),
-          $tokens['refreshToken'], $_ENV['REFRESH_LIVE_TIME']);
+          $tokens['refreshToken'], time() + $_ENV['REFRESH_LIVE_TIME']);
 
+        Cookie::set('_logid', $tokens['refreshToken'],
+          $_ENV['REFRESH_LIVE_TIME'], '/api/auth');
         return $tokens;
+    }
+
+    public function logout(string $refreshToken): bool
+    {
+        Cookie::delete('_logid');
+        return $this->tokenService->deleteToken($refreshToken);
     }
 
     public function isInputFormatValid(array $data): bool
     {
-        if ( ! $data) {
+        if (! $data) {
             return false;
         }
 
-        $validateField = (new FieldValidationService())->checkFields($data, [
-          'email', 'password',
-        ]);
+        $validateField = FieldValidationService::checkFields($data, ['email', 'password']);
 
         if ($validateField) {
             return true;
@@ -85,28 +100,28 @@ class LoginService
     public function findUserById(int $id): User
     {
         $user = $this->repository->findUserBy('id', $id);
-        $role = $user['is_admin'] == 0 ? 'user' : 'admin';
+        $role = $user['is_admin'] === 0 ? 'user' : 'admin';
 
         return new User($user['id'], $user['name'], $user['email'], $role);
     }
 
     /**
-     * @throws \App\Http\Exceptions\UserNotFoundException
+     * @throws \App\Http\Exceptions\NotFoundException
      * @throws \App\Http\Exceptions\LoginException
      */
     public function getUserByEmail(array $data): User
     {
-        if ( ! $this->isInputFormatValid($data)) {
+        if (! $this->isInputFormatValid($data)) {
             throw LoginException::invalidInputFields();
         }
 
         $this->userData = $this->repository->findUserBy('email',
           $data['email']);
 
-        if ( ! $this->userData) {
-            throw UserNotFoundException::userNotFound();
+        if (! $this->userData) {
+            throw NotFoundException::userNotFound();
         }
-        $role = $this->userData['is_admin'] == 0 ? 'user' : 'admin';
+        $role = $this->userData['is_admin'] === 0 ? 'user' : 'admin';
 
         return new User(
           $this->userData['id'],

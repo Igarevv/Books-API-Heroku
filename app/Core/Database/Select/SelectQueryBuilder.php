@@ -9,6 +9,9 @@ class SelectQueryBuilder extends AbstractQueryBuilder
     protected array $columns = [];
     protected array $conditions = [];
     protected array $joiner = [];
+    protected array $groupBy = [];
+    protected int $offset = 0;
+    protected int $limit = 0;
     public function select(...$columns): SelectQueryBuilder
     {
         $this->columns = $columns;
@@ -25,10 +28,10 @@ class SelectQueryBuilder extends AbstractQueryBuilder
       string $parentColumn,
       string $operator,
       string $joinColumn,
-      string $joinType = 'INNER'
+      string $joinType = ''
     ): SelectQueryBuilder
     {
-        $this->joiner = [
+        $this->joiner[] = [
           'type'     => $joinType,
           'table'         => $joinTable,
           'column1' => $parentColumn,
@@ -37,34 +40,51 @@ class SelectQueryBuilder extends AbstractQueryBuilder
         ];
         return $this;
     }
+    public function groupBy(...$columns): SelectQueryBuilder
+    {
+        $this->groupBy = $columns;
+        return $this;
+    }
+    public function limit(int $limit, int $offset = 0): SelectQueryBuilder
+    {
+        $this->limit = $limit;
+        $this->offset = $offset;
+        return $this;
+    }
     public function getQuery(): string
     {
         $selectTable = self::getTable();
         $alias = self::getAlias();
 
         $query = "SELECT " . implode(', ', $this->columns) . " FROM " . $selectTable;
-        if(!empty($this->alias)){
-            $query .= " AS {$this->alias}";
-        }
-        if(! empty($this->joiner)){
-            $type = $this->joiner['type'];
-            $table = $this->joiner['table'];
-            $p_column1 = $this->joiner['column1']; //parent column
-            $operator = $this->joiner['operator'];
-            $c_column2 = $this->joiner['column2']; // child
 
-            if($alias !== ''){
-                $query .= " {$type} JOIN {$table} ON {$alias}.{$p_column1} {$operator} {$table}.{$c_column2}";
-            } else{
-                $query .= " {$type} JOIN {$table} ON {$p_column1} {$operator} {$table}.{$c_column2}";
+        if($alias){
+            $query .= " AS {$alias}";
+        }
+
+        if($this->joiner){
+            foreach ($this->joiner as $joiner){
+                $type = $joiner['type'];
+                $table = $joiner['table'];
+                $p_column1 = $joiner['column1']; //parent column
+                $operator = $joiner['operator'];
+                $c_column2 = $joiner['column2']; // child
+
+                $query .= " {$type} JOIN {$table} ON {$table}.{$p_column1} {$operator} {$c_column2}";
             }
         }
-        if(! empty($this->conditions)){
+        if($this->conditions){
             $query .= " WHERE ";
             foreach ($this->conditions as $condition) {
                 $query .= $condition[0] . " " . $condition[1] . $condition[2] . " AND ";
             }
             $query = rtrim($query, " AND ");
+        }
+        if($this->groupBy){
+            $query .= " GROUP BY " . implode(', ', $this->groupBy);
+        }
+        if($this->limit !== 0){
+            $query .= " LIMIT {$this->offset}, {$this->limit}";
         }
         return $query;
     }

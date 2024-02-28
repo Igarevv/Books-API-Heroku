@@ -25,10 +25,7 @@ class UserRepository implements UserRepositoryInterface
           ':name' => $userData['name'],
           ':password' => password_hash($userData['password'], PASSWORD_DEFAULT),
         ]);
-        if($result !== false){
-            return true;
-        }
-        return false;
+        return $result !== false;
     }
     public function findUserBy(string $key, string $value): array
     {

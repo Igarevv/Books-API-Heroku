@@ -9,12 +9,11 @@ class JsonResponse extends Response implements ResponseInterface
     protected mixed $body;
 
     protected bool $isError;
-    public function __construct($status, mixed $body = [], bool $isError = false)
+    public function __construct(int $status, mixed $body = [], bool $isError = false)
     {
         $this->status = $status;
         $this->body = $body;
         $this->isError = $isError;
-        return $this;
     }
 
     public function send(): void
@@ -37,7 +36,7 @@ class JsonResponse extends Response implements ResponseInterface
             ];
         }
 
-        echo json_encode($response);
+        echo json_encode($response, JSON_THROW_ON_ERROR);
         exit;
     }
 }

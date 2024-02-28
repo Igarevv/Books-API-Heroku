@@ -56,7 +56,7 @@ class RouteDispatcher
             if(! isset($requestUriArray[$key])){
                 break;
             }
-            $this->paramFromRequest[$param] = $requestUriArray[$key];
+            $this->paramFromRequest[] = $requestUriArray[$key];
             $requestUriArray[$key] = '{[^/]+}';
         }
 

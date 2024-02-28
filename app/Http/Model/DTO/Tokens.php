@@ -5,9 +5,9 @@ namespace App\Http\Model\DTO;
 class Tokens
 {
     public function __construct(
-      private string $refreshToken,
-      private int $user_id,
-      private int $expires_in
+      private readonly string $refreshToken,
+      private readonly int $user_id,
+      private readonly int $expires_in
     ) {}
 
     public function getRefreshToken(): string

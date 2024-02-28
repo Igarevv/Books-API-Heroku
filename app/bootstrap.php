@@ -4,10 +4,10 @@ use App\Core\Database\Database;
 use App\Core\Database\DatabaseInterface;
 use App\Core\Http\Request\Request;
 use App\Core\Http\Request\RequestInterface;
-use App\Core\Http\Response\JsonResponse;
-use App\Core\Http\Response\ResponseInterface;
 use App\Core\Validator\Validator;
 use App\Core\Validator\ValidatorInterface;
+use App\Http\Model\Repository\Book\BookRepository;
+use App\Http\Model\Repository\Book\BookRepositoryInterface;
 use App\Http\Model\Repository\Token\TokenRepository;
 use App\Http\Model\Repository\Token\TokenRepositoryInterface;
 use App\Http\Model\Repository\User\UserRepository;
@@ -28,3 +28,4 @@ $this->container->bind(DatabaseInterface::class, function (){
 
 $this->container->bind(UserRepositoryInterface::class, UserRepository::class);
 $this->container->bind(TokenRepositoryInterface::class, TokenRepository::class);
+$this->container->bind(BookRepositoryInterface::class, BookRepository::class);

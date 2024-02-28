@@ -34,7 +34,7 @@ class RegisterService
           'password' => ['required', 'min:8'],
         ];
 
-        $validateFields = (new FieldValidationService())->checkFields($userData, $rules);
+        $validateFields = FieldValidationService::checkFields($userData, $rules);
 
         if (! $validateFields) {
            throw DataException::unprocessable();

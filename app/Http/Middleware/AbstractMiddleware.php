@@ -12,5 +12,5 @@ abstract class AbstractMiddleware
       protected RequestInterface $request,
     )
     {}
-    public abstract function handle();
+    abstract public function handle();
 }

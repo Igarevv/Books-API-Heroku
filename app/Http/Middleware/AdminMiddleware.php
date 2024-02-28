@@ -6,13 +6,13 @@ use App\Core\Helpers\JWTHelper;
 use App\Core\Http\Response\JsonResponse;
 use App\Core\Http\Response\Response;
 
-class AuthMiddleware extends AbstractMiddleware
+class AdminMiddleware extends AbstractMiddleware
 {
     public function handle(): void
     {
         $token = (new JWTHelper())->validateAccessToken($this->request);
-        if(! $token){
-            (new JsonResponse(Response::UNAUTHORIZED))->send();
+        if ($token->data->role !== 'admin'){
+            (new JsonResponse(Response::FORBIDDEN))->send();
         }
     }
 }
