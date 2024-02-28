@@ -25,7 +25,7 @@ class Book
 
     public function genre(): array
     {
-        return $this->genre;
+        return array_map('mb_strtolower', $this->genre);
     }
 
     public function description(): string

@@ -8,7 +8,7 @@ class RouteConfiguration
     public string $route;
     private string $controllerName;
     private string $index;
-    private ?string $middleware = null;
+    private ?array $middleware = null;
 
     public function __construct(string $route, string $controllerName, string $index)
     {
@@ -17,9 +17,9 @@ class RouteConfiguration
         $this->index = $index;
     }
 
-    public function middleware(string $middleware): RouteConfiguration
+    public function only(string $middleware): RouteConfiguration
     {
-        $this->middleware = $middleware;
+        $this->middleware[] = $middleware;
         return $this;
     }
 
@@ -33,7 +33,7 @@ class RouteConfiguration
         return $this->controllerName;
     }
 
-    public function getMiddleware(): ?string
+    public function getMiddleware(): ?array
     {
         return $this->middleware;
     }

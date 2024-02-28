@@ -11,8 +11,8 @@ class NotFoundException extends \Exception
     {
         return new static('User not found', Response::NOT_FOUND);
     }
-    public static function BookNotFound(): static
+    public static function bookNotFound(): static
     {
-        return new static('Book not found', Response::NOT_FOUND);
+        return new static('Book(s) not found', Response::NOT_FOUND);
     }
 }

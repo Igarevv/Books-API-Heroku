@@ -6,5 +6,7 @@ use App\Http\Model\DTO\Book;
 
 interface BookRepositoryInterface
 {
-    public function insertBook(Book $bookData): bool;
+    public function findBooks(int $limit, int $offset, ?int $book_id): array;
+    public function insertBook(Book $bookData): bool|string;
+    public function deleteBook(mixed $bookId): bool;
 }

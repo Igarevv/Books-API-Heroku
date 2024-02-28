@@ -32,8 +32,7 @@ class Router implements RouteInterface
         [$controllerName, $controllerMethod, $middleware, $requestParams,] = $route;
 
         if ($middleware) {
-            $middleware = Middleware::resolve($middleware);
-            (new $middleware($request))->handle();
+            Middleware::handleChain($middleware, $request);
         }
 
         if ($httpMethod === 'POST' && $request->server['CONTENT_TYPE'] === 'application/json') {

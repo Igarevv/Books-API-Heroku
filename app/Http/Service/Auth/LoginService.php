@@ -30,8 +30,11 @@ class LoginService
 
         $userId = $userDto->getUserId();
 
-        $tokens = $this->tokenService->generateTokens($userId,
-          $userDto->getRole());
+        $data = [
+          'user_id' => $userDto->getUserId(),
+          'role'    => $userDto->getRole()
+        ];
+        $tokens = $this->tokenService->generateTokens($data);
 
         $this->tokenService->saveToken($userId, $tokens['refreshToken'],
           time() + $_ENV['REFRESH_LIVE_TIME']);
@@ -60,9 +63,11 @@ class LoginService
         }
 
         $userDto = $this->findUserById($tokenFromDb->getUserId());
-
-        $tokens = $this->tokenService->generateTokens($userDto->getUserId(),
-          $userDto->getRole());
+        $data = [
+          'user_id' => $userDto->getUserId(),
+          'role'    => $userDto->getRole()
+        ];
+        $tokens = $this->tokenService->generateTokens($data);
 
         $this->tokenService->saveToken($userDto->getUserId(),
           $tokens['refreshToken'], time() + $_ENV['REFRESH_LIVE_TIME']);

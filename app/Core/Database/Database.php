@@ -62,6 +62,18 @@ class Database implements DatabaseInterface
     {
         return $this->pdo->lastInsertId();
     }
+    public function beginTransaction(): void
+    {
+        $this->pdo->beginTransaction();
+    }
+    public function commitTransaction(): void
+    {
+        $this->pdo->commit();
+    }
+    public function rollBack(): void
+    {
+        $this->pdo->rollBack();
+    }
     public function prepare(string $sql): \PDOStatement
     {
         return $this->pdo->prepare($sql);

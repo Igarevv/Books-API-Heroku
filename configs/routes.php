@@ -14,6 +14,9 @@ return [
   Route::post('/api/auth/register', [RegisterController::class, 'register']),
   Route::post('/api/auth/refresh-tokens', [LoginController::class, 'refresh']),
   Route::post('/api/auth/logout', [LoginController::class, 'logout']),
-  Route::get('/api/show', [HomeController::class, 'index'])->middleware('auth'),
-  Route::post('/api/admin/books', [BookController::class, 'create']),
+  Route::post('/api/admin/books', [BookController::class, 'create'])->only('auth')->only('admin'),
+  Route::delete('/api/admin/books/{id}', [BookController::class, 'deleteBook'])->only('auth')->only('admin'),
+  Route::get('/api/books', [BookController::class, 'index']),
+  Route::get('/api/books/{id}', [BookController::class, 'showOneBook']),
+    // /api/books?limit={}
 ];

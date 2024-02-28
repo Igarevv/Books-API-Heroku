@@ -13,12 +13,8 @@ class TokenService
     )
     {}
 
-    public function generateTokens(...$payload): array
+    public function generateTokens(array $data): array
     {
-        $data = [];
-        foreach ($payload as $value){
-            $data['data'] = $value;
-        }
         $payload = [
           'iss'  => 'http://api.books.com',
           'iat'  => time(),
