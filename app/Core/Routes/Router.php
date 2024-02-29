@@ -59,8 +59,7 @@ class Router implements RouteInterface
         $routes = Route::getRoutes($method);
 
         foreach ($routes as $routeConfiguration) {
-            $dispatchRoute = $routeDispatcher->dispatch($routeConfiguration,
-              $uri);
+            $dispatchRoute = $routeDispatcher->dispatch($routeConfiguration, $uri);
 
             if ($dispatchRoute !== false) {
                 return $dispatchRoute;
@@ -69,10 +68,8 @@ class Router implements RouteInterface
         return false;
     }
 
-    private function isValidRoute(
-      ?string $controllerName,
-      ?string $controllerMethod
-    ): bool {
+    private function isValidRoute(?string $controllerName, ?string $controllerMethod): bool
+    {
         return class_exists($controllerName) && method_exists($controllerName,
             $controllerMethod);
     }

@@ -30,7 +30,6 @@ class RouteDispatcher
         }
         return false;
     }
-
     private function saveRequestUri(): void
     {
         if($this->requestUri !== '/'){
@@ -42,6 +41,8 @@ class RouteDispatcher
     {
         $routeArray = explode('/', $this->routeConfiguration->route);
 
+        $this->matchedRoutes = [];
+
         foreach ($routeArray as $key => $param){
             if(preg_match('/{.*}/', $param)){
                 $this->matchedRoutes[$key] = preg_replace('/(^{)|(}$)/', '', $param);
@@ -50,19 +51,21 @@ class RouteDispatcher
     }
     private function makeRegexRequest(): void
     {
+        $this->paramFromRequest = [];
+
         $requestUriArray = explode('/', $this->requestUri);
 
         foreach ($this->matchedRoutes as $key => $param) {
-            if(! isset($requestUriArray[$key])){
-                break;
-            }
-            $this->paramFromRequest[] = $requestUriArray[$key];
-            $requestUriArray[$key] = '{[^/]+}';
-        }
 
+            if(isset($requestUriArray[$key])){
+                $this->paramFromRequest[] = $requestUriArray[$key];
+                $requestUriArray[$key] = '{[^/]+}';
+            }
+        }
         $this->requestUri = implode('/', $requestUriArray);
         $this->prepareRegex();
     }
+
     private function prepareRegex(): void
     {
         $this->requestUri = str_replace('/', '\/', $this->requestUri);
