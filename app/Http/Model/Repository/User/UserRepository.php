@@ -3,6 +3,7 @@
 namespace App\Http\Model\Repository\User;
 
 use App\Core\Database\DatabaseInterface;
+use App\Core\Database\DeleteQueryBuilder\DeleteQueryBuilder;
 use App\Core\Database\Insert\InsertQueryBuilder;
 use App\Core\Database\Select\SelectQueryBuilder;
 use Ramsey\Uuid\Uuid;
@@ -37,5 +38,41 @@ class UserRepository implements UserRepositoryInterface
         $stmt = $this->database->execute($sql, [$key => $value]);
 
         return $stmt->fetch() ?: [];
+    }
+
+    public function addFavoriteBook(mixed $user_id, mixed $book_id): bool
+    {
+        $sql = InsertQueryBuilder::table('User_Book')
+          ->values(['user_id', 'book_id'])
+          ->getQuery();
+
+        $stmt = $this->database->execute($sql, [':user_id' => $user_id, 'book_id' => $book_id]);
+
+        return $stmt !== false;
+    }
+    public function isBookInFavorites(mixed $user_id, int $book_id): bool
+    {
+        $sql = SelectQueryBuilder::table('User_Book')
+          ->select('*')
+          ->where('user_id', '=', 'user_id')
+          ->where('book_id', '=', 'book_id')
+          ->limit(1)
+          ->getQuery();
+
+        $favoriteBook = $this->database->execute($sql, [':user_id' => $user_id, ':book_id' => $book_id]);
+
+        return $favoriteBook->rowCount() > 0;
+    }
+
+    public function deleteFromFavorites(mixed $user_id, int $book_id): bool
+    {
+        $sql = DeleteQueryBuilder::table('User_Book')
+          ->where('user_id', '=', 'user_id')
+          ->where('book_id', '=', 'book_id')
+          ->getQuery();
+
+        $deleted = $this->database->execute($sql, [':user_id' => $user_id, ':book_id' => $book_id]);
+
+        return $deleted->rowCount() > 0;
     }
 }

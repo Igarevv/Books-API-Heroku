@@ -10,8 +10,9 @@ class AdminMiddleware extends AbstractMiddleware
 {
     public function handle(): void
     {
-        $token = (new JWTHelper())->validateAccessToken($this->request);
-        if ($token->data->role !== 'admin'){
+        $token = JWTHelper::validateAccessToken($this->request);
+
+        if (! $token || $token->data->role !== 'admin'){
             (new JsonResponse(Response::FORBIDDEN))->send();
         }
     }

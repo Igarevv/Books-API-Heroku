@@ -15,7 +15,7 @@ class BookRepository implements BookRepositoryInterface
       private readonly DatabaseInterface $database
     ) {}
 
-    public function findBooks(int $limit = 0, int $offset = 0, mixed $book_id = null): array
+    public function findBooks(int $limit = 0, int $offset = 0, mixed $book_id = null, mixed $user_id = null): array
     {
         $sql = SelectQueryBuilder::table('Book', 'B')
           ->select('B.book_id', 'B.title', 'B.year', 'B.isbn',
@@ -26,6 +26,12 @@ class BookRepository implements BookRepositoryInterface
           ->join('Genre', 'genre_id', '=', 'Book_Genre.genre_id')
           ->join('Author', 'author_id', '=', 'Book_Author.author_id');
 
+        if($book_id !== null && $user_id !== null){
+            return $this->getOneFavoriteBookById($sql, $book_id, $user_id);
+        }
+        if($user_id !== null){
+            return $this->getAllFavoriteBooks($sql, $user_id, $limit, $offset);
+        }
         if ($book_id !== null) {
             return $this->getBookById($sql, $book_id, $limit, $offset);
         }
@@ -62,7 +68,7 @@ class BookRepository implements BookRepositoryInterface
         }
     }
 
-    public function deleteBook(mixed $bookId): bool
+    public function deleteBook(int $bookId): bool
     {
         $sql = DeleteQueryBuilder::table('Book')
           ->where('book_id', '=', 'book_id')
@@ -71,6 +77,20 @@ class BookRepository implements BookRepositoryInterface
 
         return $stmt !== false && $stmt->rowCount() > 0;
     }
+
+    public function isBookExists(int $book_id): bool
+    {
+        $sql = SelectQueryBuilder::table('Book')
+          ->select('*')
+          ->where('book_id', '=', 'book_id')
+          ->limit(1)
+          ->getQuery();
+
+        $book = $this->database->execute($sql, [':book_id' => $book_id]);
+
+        return $book->rowCount() > 0;
+    }
+
     protected function insertRelation(string $tableName, array $values_assoc): void
     {
         $sql = InsertQueryBuilder::table($tableName)
@@ -174,5 +194,26 @@ class BookRepository implements BookRepositoryInterface
         $sql->groupBy('B.book_id', 'B.title', 'B.year', 'B.isbn')
           ->limit($offset, $limit);
         return $this->database->execute($sql->getQuery())->fetchAll();
+    }
+
+    private function getAllFavoriteBooks(SelectQueryBuilder $sql, mixed $user_id, int $limit, int $offset): array
+    {
+        $sql->join('User_Book', 'book_id', '=', 'B.book_id')
+          ->where('user_id', '=', 'user_id')
+          ->groupBy('B.book_id', 'B.title', 'B.year', 'B.isbn')
+          ->limit($offset, $limit);
+
+        return $this->database->execute($sql->getQuery(), [':user_id' => $user_id])->fetchAll();
+    }
+
+    private function getOneFavoriteBookById(SelectQueryBuilder $sql, mixed $user_id, mixed $book_id ): array
+    {
+        $sql->join('User_Book', 'book_id', '=', 'B.book_id')
+          ->where('User_Book.user_id', '=', 'user_id')
+          ->where('B.book_id', '=', 'book_id')
+          ->groupBy('B.book_id', 'B.title', 'B.year', 'B.isbn');
+
+
+        return $this->database->execute($sql->getQuery(), [':user_id' => $user_id, ':book_id' => $book_id])->fetchAll();
     }
 }

@@ -8,9 +8,9 @@ use Firebase\JWT\Key;
 
 class JWTHelper
 {
-    public function validateAccessToken(RequestInterface $request): \stdClass|bool
+    public static function validateAccessToken(RequestInterface $request): \stdClass|bool
     {
-        $token = $this->bearerToken($request);
+        $token = self::bearerToken($request);
         if(! $token){
             return false;
         }
@@ -20,7 +20,8 @@ class JWTHelper
             return false;
         }
     }
-    private function bearerToken(RequestInterface $request): ?string
+
+    private static function bearerToken(RequestInterface $request): ?string
     {
         if(isset($request->server['HTTP_AUTHORIZATION'])){
             return str_replace('Bearer ', '', $request->server['HTTP_AUTHORIZATION']);
