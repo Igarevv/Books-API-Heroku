@@ -26,7 +26,7 @@ class LoginController extends Controller
 
             $tokens = $this->loginService->login($userDto, $data['password']);
 
-            return new JsonResponse(Response::OK, $tokens);
+            return new JsonResponse(Response::OK, ['user_id' => $userDto->getUserId(), 'tokens' => $tokens]);
         } catch (LoginException|NotFoundException $e) {
             return new JsonResponse($e->getCode(), $e->getMessage());
         }
@@ -34,7 +34,8 @@ class LoginController extends Controller
 
     public function refresh(RequestInterface $request): JsonResponse
     {
-        $token = $request->cookie['_logid'] ?? '';
+        $token = $request->cookie['_logid'] ?? $request->input('string')['string'] ?? '';
+
         try {
             $newTokens = $this->loginService->refresh($token);
 

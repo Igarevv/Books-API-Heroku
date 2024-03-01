@@ -1,0 +1,47 @@
+version: '3'
+networks:
+  nginx-php-mysql:
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - php
+      - mysql
+    networks:
+      - nginx-php-mysql
+  php:
+    container_name: php-fpm
+    build:
+      context: .
+      dockerfile: Docker/php/Dockerfile
+    ports:
+      - "9000:9000"
+    networks:
+      - nginx-php-mysql
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 0375Ihor_
+      MYSQL_ROOT_HOST: localhost
+      MYSQL_PASSWORD: Devbase75_
+      MYSQL_USER: dev
+      MYSQL_DATABASE: BookAPI
+    volumes:
+        - ./database/dump.sql:/docker-entrypoint-initdb.d/dump.sql
+    ports:
+      - "33306:3306"
+    restart: always
+    networks:
+      - nginx-php-mysql
+  composer:
+    image: composer:latest
+    container_name: composer
+    volumes:
+      - .:/var/www/books-api
+    working_dir: /var/www/books-api

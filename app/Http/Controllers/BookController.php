@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Core\Http\Request\RequestInterface;
 use App\Core\Http\Response\JsonResponse;
 use App\Core\Http\Response\Response;
-use App\Http\Exceptions\BookException;
 use App\Http\Exceptions\ServerException;
 use App\Http\Exceptions\DataException;
 use App\Http\Exceptions\NotFoundException;
