@@ -106,7 +106,6 @@ class LoginService
     }
 
     /**
-     * @throws \App\Http\Exceptions\NotFoundException
      * @throws \App\Http\Exceptions\LoginException
      */
     public function getUserByEmail(array $data): User
@@ -119,7 +118,7 @@ class LoginService
           $data['email']);
 
         if (! $this->userData) {
-            throw NotFoundException::userNotFound();
+            throw LoginException::wrongPassword();
         }
         $role = $this->userData['is_admin'] === 0 ? 'user' : 'admin';
 

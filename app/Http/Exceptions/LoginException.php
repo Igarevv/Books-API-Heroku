@@ -13,7 +13,7 @@ class LoginException extends \Exception
 
     public static function wrongPassword(): static
     {
-        return new static('Wrong password or email', Response::OK);
+        return new static('Wrong email or password', Response::OK);
     }
 
     public static function unauthorized(): static

@@ -13,7 +13,7 @@ class UserInputRuleSet
       'alphanumeric' => "Field %s can only contains letters, numbers and special symbols: ' or - ",
       'max' => "Field %s cannot be more than %d symbols",
       'min' => "Field %s cannot be less than %d symbols",
-      'unique' => "Sorry, but this %s is already exists",
+      'unique' => "This %s is already exists",
       'string' => "Field %s must be string",
       'digits' => "Field %s can be only numeric and %d number(s) long"
     ];

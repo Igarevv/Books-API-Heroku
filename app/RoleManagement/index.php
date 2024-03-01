@@ -5,7 +5,7 @@ use App\RoleManagement\Exception\RoleManagementException;
 use App\RoleManagement\User\Role;
 use App\RoleManagement\User\User;
 
-const APP_PATH = '/var/www/nginx/books-api';
+const APP_PATH = '/var/www/nginx/books-api.conf';
 
 require APP_PATH . '/vendor/autoload.php';
 

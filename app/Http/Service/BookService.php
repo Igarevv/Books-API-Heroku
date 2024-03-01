@@ -42,6 +42,9 @@ class BookService
         return $books;
     }
 
+    /**
+     * @throws \App\Http\Exceptions\NotFoundException
+     */
     public function showOneBook(mixed $book_id): array
     {
         $book = $this->repository->findBooks(book_id: $book_id);
