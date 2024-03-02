@@ -23,7 +23,7 @@ $this->container->bind(ValidatorInterface::class, function (){
 
 
 $this->container->bind(DatabaseInterface::class, function (){
-    return new Database($this->config);
+    return new Database(new \App\Config\Config());
 });
 
 $this->container->bind(UserRepositoryInterface::class, UserRepository::class);

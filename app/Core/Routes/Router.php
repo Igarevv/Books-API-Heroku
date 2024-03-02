@@ -21,6 +21,11 @@ class Router implements RouteInterface
         $this->getRoutesFromConfig();
     }
 
+    /**
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws \JsonException
+     */
     public function dispatch(string $uri, string $httpMethod, RequestInterface $request): void
     {
         $route = $this->findRoute($uri, $httpMethod);

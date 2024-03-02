@@ -5,13 +5,14 @@ use App\RoleManagement\Exception\RoleManagementException;
 use App\RoleManagement\User\Role;
 use App\RoleManagement\User\User;
 
-const APP_PATH = '/var/www/nginx/books-api.conf';
+define('APP_PATH', realpath(dirname(__DIR__, 2)));
 
 require APP_PATH . '/vendor/autoload.php';
 
+
 $container = new Container();
 
-$user = new User($container, new \App\Config\Config());
+$user = new User($container);
 
 try{
     $userId = isset($argv[1]) && is_numeric($argv[1]) ? $argv[1] : 0;

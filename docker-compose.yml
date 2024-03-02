@@ -18,20 +18,19 @@ services:
     container_name: php-fpm
     build:
       context: .
-      dockerfile: ./Docker/php/Dockerfile
+      dockerfile: docker/php/Dockerfile
     networks:
       - nginx-php-mysql
   mysql:
-    image: mysql:latest
+    build:
+      context: .
+      dockerfile: docker/mysql/Dockerfile
     container_name: mysql
     environment:
       MYSQL_ROOT_PASSWORD: 0375Ihor_
-      MYSQL_ROOT_HOST: localhost
       MYSQL_PASSWORD: Devbase75_
       MYSQL_USER: dev
       MYSQL_DATABASE: BookAPI
-    volumes:
-        - ./database/dump.sql:/docker-entrypoint-initdb.d/dump.sql
     ports:
       - "33306:3306"
     restart: always
@@ -41,5 +40,5 @@ services:
     image: composer:latest
     container_name: composer
     volumes:
-      - .:/var/www/books-api
-    working_dir: /var/www/books-api
+      - .:/var/www/nginx/books-api
+    working_dir: /var/www/nginx/books-api

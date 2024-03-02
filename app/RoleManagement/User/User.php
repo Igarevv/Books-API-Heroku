@@ -11,11 +11,9 @@ use Psr\Container\ContainerInterface;
 class User implements UserInterface
 {
     protected DatabaseInterface $database;
-    public function __construct(
-      protected ContainerInterface $container,
-      protected ConfigInterface $config)
+    public function __construct(protected ContainerInterface $container)
     {
-        require_once '/var/www/nginx/books-api/app/bootstrap.php';
+        require_once APP_PATH . '/app/bootstrap.php';
         $this->database = $container->get(DatabaseInterface::class);
     }
 
