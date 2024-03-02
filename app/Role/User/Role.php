@@ -1,12 +1,11 @@
 <?php
 
-namespace App\RoleManagement\User;
+namespace App\Role\User;
 
-use App\RoleManagement\Exception\RoleManagementException;
+use App\Role\Exception\RoleManagementException;
 
 class Role
 {
-
     protected UserInterface $user;
 
     public function __construct(UserInterface $user)

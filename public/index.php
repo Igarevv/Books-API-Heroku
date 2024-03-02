@@ -1,5 +1,5 @@
 <?php
-
+error_reporting(0);
 
 use App\App;
 use Symfony\Component\Dotenv\Dotenv;

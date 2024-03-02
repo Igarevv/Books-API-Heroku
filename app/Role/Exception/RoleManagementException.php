@@ -1,6 +1,6 @@
 <?php
 
-namespace App\RoleManagement\Exception;
+namespace App\Role\Exception;
 
 class RoleManagementException extends \Exception
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\RoleManagement\User;
+namespace App\Role\User;
 
 interface UserInterface
 {

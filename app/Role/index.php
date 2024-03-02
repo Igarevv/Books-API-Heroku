@@ -1,9 +1,9 @@
 <?php
 
 use App\Core\Container\Container;
-use App\RoleManagement\Exception\RoleManagementException;
-use App\RoleManagement\User\Role;
-use App\RoleManagement\User\User;
+use App\Role\User\User;
+use App\Role\Exception\RoleManagementException;
+use App\Role\User\Role;
 
 define('APP_PATH', realpath(dirname(__DIR__, 2)));
 

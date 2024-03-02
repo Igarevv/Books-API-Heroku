@@ -1,8 +1,7 @@
 <?php
 
-namespace App\RoleManagement\User;
+namespace App\Role\User;
 
-use App\Config\ConfigInterface;
 use App\Core\Database\DatabaseInterface;
 use App\Core\Database\Select\SelectQueryBuilder;
 use App\Core\Database\Update\UpdateQueryBuilder;
