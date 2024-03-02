@@ -1,7 +1,7 @@
 ### Book-API
 API local domain name: http://api.books.com:8000
 
-API functionality:
+**API functionality**:
 <li>Registration and login using JWT</li>
 <li>CRUD operations with books</li>
 <li>Adding and removing books from the "user favorites" list</li>
