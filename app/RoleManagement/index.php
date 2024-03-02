@@ -20,7 +20,7 @@ try{
 
     (new Role($user))->changeRole($userId, $role);
 
-    echo 'Role was successfully changed. User must re-login to apply changes.';
+    echo 'Role was successfully changed. User must re-login to apply changes.' . PHP_EOL;
 } catch(RoleManagementException $e){
-    echo $e->getMessage();
+    echo $e->getMessage() . PHP_EOL;
 }
