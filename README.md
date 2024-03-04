@@ -24,5 +24,10 @@ or
 docker exec -it php-fpm sh -c "php app/Role/index.php <user id> user"
 ````
 
-To save books in CSV format use endpoint:
-__/api/admin/books/save__. Result you can see in project root folder in file "books.csv"
+### To save books in CSV format:
+Use endpoint __/api/admin/books/save__.
+To open the file use command:
+````
+docker exec -it php-fpm cat /var/www/nginx/books-api/books.csv
+````
+

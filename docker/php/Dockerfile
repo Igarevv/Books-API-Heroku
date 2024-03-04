@@ -5,3 +5,5 @@ RUN apt-get update && apt-get install -y git \
 
 COPY ./././ /var/www/nginx/books-api
 WORKDIR /var/www/nginx/books-api
+
+RUN chown www-data:www-data /var/www/nginx/books-api/books.csv

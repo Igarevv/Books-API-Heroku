@@ -26,7 +26,7 @@ class BookService
     {
         $limit = 0;
         $offset = 0;
-        if ($limitOffset) {
+        if (is_numeric($limitOffset) && $limitOffset > 0) {
             $values = explode(',', $limitOffset);
             if (isset($values[1])) {
                 [$offset, $limit] = $values;
