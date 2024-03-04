@@ -1,5 +1,6 @@
-### Book-API
-API local domain name: http://api.books.com:8000
+## Book-API
+
+### __Swagger Documentation__ available in http://localhost:8000/swagger
 
 **API functionality**:
 <li>Registration and login using JWT</li>
