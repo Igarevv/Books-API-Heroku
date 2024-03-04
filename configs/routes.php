@@ -11,7 +11,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 
 return [
-  Route::get('/', [HomeController::class, 'index']),
+  Route::get('/api', [HomeController::class, 'index']),
   Route::post('/api/auth/login', [LoginController::class, 'login']),
   Route::post('/api/auth/register', [RegisterController::class, 'register']),
   Route::post('/api/auth/refresh-tokens', [LoginController::class, 'refresh']),

@@ -1,0 +1,901 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Book-API",
+    "version": "0.0.1"
+  },
+  "servers": [
+    {
+      "url": "http://localhost"
+    }
+  ],
+  "paths": {
+    "/api": {
+      "get": {
+        "summary": "Home Page",
+        "tags": [
+          "Home"
+        ],
+        "operationId": "showHome",
+        "responses": {
+          "200": {
+            "description": "200 | OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "HTTP-message": {
+                      "type": "string",
+                      "example": "200 | OK"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Books-API home page"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/register": {
+      "post": {
+        "summary": "Method to register user",
+        "tags": [
+          "Auth"
+        ],
+        "operationId": "register",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "201 | Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400 | Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorWithMessage"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "422 | Unprocessable Entity"
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "summary": "Method to login user",
+        "tags": [
+          "Auth"
+        ],
+        "operationId": "login",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200 | OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "HTTP-message": {
+                      "type": "string",
+                      "example": "200 | OK"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user_id": {
+                          "type": "integer",
+                          "example": 33
+                        },
+                        "access_token": {
+                          "type": "string",
+                          "example": "token"
+                        },
+                        "refresh_token": {
+                          "type": "string",
+                          "example": "token"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/refresh-tokens": {
+      "post": {
+        "summary": "Method to refresh tokens",
+        "tags": [
+          "Auth"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "operationId": "refresh",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "example": "token"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200 | OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "HTTP-message": {
+                      "type": "string",
+                      "example": "200 | OK"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user_id": {
+                          "type": "integer",
+                          "example": 33
+                        },
+                        "access_token": {
+                          "type": "string",
+                          "example": "token"
+                        },
+                        "refresh_token": {
+                          "type": "string",
+                          "example": "token"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401 | Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/auth/logout": {
+      "post": {
+        "summary": "Method to logout user",
+        "tags": [
+          "Auth"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "operationId": "logout",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "example": "token"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200 | OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": 200
+                    },
+                    "HTTP-message": {
+                      "type": "string",
+                      "example": "200 | OK"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "See you"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        }
+      }
+    },
+    "/api/books": {
+      "get": {
+        "summary": "Method to get all books",
+        "tags": [
+          "Book"
+        ],
+        "operationId": "index",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Number of books to return. Use single number for a single limit or \"1,10\" for range limit."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 | OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "HTTP_message": {
+                      "type": "string",
+                      "example": "200 | OK"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Book"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404 | Not Found"
+          }
+        }
+      }
+    },
+    "/api/books/{book_id}": {
+      "get": {
+        "summary": "Method to get one book",
+        "tags": [
+          "Book"
+        ],
+        "operationId": "showOneBook",
+        "parameters": [
+          {
+            "name": "book_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID of the book to delete",
+            "example": 50
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 | OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "HTTP_message": {
+                      "type": "string",
+                      "example": "200 | OK"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "book_id": {
+                          "type": "string",
+                          "example": "50"
+                        },
+                        "title": {
+                          "type": "string",
+                          "example": "Harry Potter and Deathly Hallows Part 1"
+                        },
+                        "year": {
+                          "type": "integer",
+                          "example": 2000
+                        },
+                        "isbn": {
+                          "type": "integer",
+                          "example": 1234567891234
+                        },
+                        "author": {
+                          "type": "string",
+                          "example": "J. Rowling"
+                        },
+                        "genre": {
+                          "type": "string",
+                          "example": "roman,fantasy"
+                        },
+                        "description": {
+                          "type": "string",
+                          "example": "..."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404 | Not Found"
+          }
+        }
+      }
+    },
+    "/api/admin/books": {
+      "post": {
+        "summary": "Methond to add book",
+        "tags": [
+          "Book"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "operationId": "create",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Book"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "201 | Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Success"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400 | Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorWithMessage"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401 | Unauthorized"
+          },
+          "403": {
+            "description": "403 | Forbidden"
+          },
+          "422": {
+            "description": "422 | Unprocessable Entity"
+          }
+        }
+      }
+    },
+    "/api/admin/books/save": {
+      "post": {
+        "summary": "Method to save list of books in CSV format",
+        "tags": [
+          "Book"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "operationId": "saveBooksInCSV",
+        "responses": {
+          "200": {
+            "description": "200 | OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "HTTP_message": {
+                      "type": "string",
+                      "example": "200 | OK"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "CSV file was saved in project root folder as 'books.csv'"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401 | Unauthorized"
+          },
+          "403": {
+            "description": "403 | Forbidden"
+          },
+          "404": {
+            "description": "404 | Not Found"
+          }
+        }
+      }
+    },
+    "/api/admin/books/{book_id}": {
+      "delete": {
+        "summary": "Method to delete book",
+        "tags": [
+          "Book"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "operationId": "deleteBook",
+        "parameters": [
+          {
+            "name": "book_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID of the book to delete",
+            "example": 50
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The book was deleted successfully."
+          },
+          "404": {
+            "description": "Book not found"
+          }
+        }
+      }
+    },
+    "/api/books/favorite": {
+      "get": {
+        "summary": "Method to get all user favorite books",
+        "tags": [
+          "User books"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "operationId": "showUserFavorite",
+        "responses": {
+          "200": {
+            "description": "200 | OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "HTTP_message": {
+                      "type": "string",
+                      "example": "200 | OK"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Book"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401 | Unauthorized"
+          },
+          "404": {
+            "description": "404 | Book not Found"
+          }
+        }
+      }
+    },
+    "/api/books/favorite/{book_id}": {
+      "get": {
+        "summary": "Method to get one favorite user book",
+        "tags": [
+          "User books"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "book_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID of the book to delete",
+            "example": 50
+          }
+        ],
+        "operationId": "showOneUserBook",
+        "responses": {
+          "200": {
+            "description": "200 | OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "HTTP_message": {
+                      "type": "string",
+                      "example": "200 | OK"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Book"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401 | Unauthorized"
+          },
+          "404": {
+            "description": "404 | Book Not Found"
+          }
+        }
+      },
+      "post": {
+        "summary": "Method to add book in user favorites",
+        "tags": [
+          "User books"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "operationId": "addUserFavoriteBook",
+        "parameters": [
+          {
+            "name": "book_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID of the book to add",
+            "example": 50
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 | OK"
+          },
+          "400": {
+            "description": "400 | Bad Request | Book exists"
+          },
+          "401": {
+            "description": "401 | Unauthorized"
+          },
+          "404": {
+            "description": "404 | Book Not Found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Method to delete book from user favorites",
+        "tags": [
+          "User books"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "operationId": "deleteFavoriteBook",
+        "parameters": [
+          {
+            "name": "book_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID of the book to delete",
+            "example": 50
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 | OK"
+          },
+          "401": {
+            "description": "401 | Unauthorized"
+          },
+          "404": {
+            "description": "404 | Book Not Found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "JWT": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "responses": {
+      "UnauthorizedError": {
+        "description": "Access token is missing or invalid"
+      }
+    },
+    "schemas": {
+      "Book": {
+        "type": "object",
+        "required": [
+          "title",
+          "year",
+          "isbn",
+          "description",
+          "author",
+          "genre"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Harry Potter and Deathly Hallows Part 1"
+          },
+          "year": {
+            "type": "integer",
+            "example": 2000
+          },
+          "isbn": {
+            "type": "integer",
+            "example": 1234567891234
+          },
+          "author": {
+            "oneOf": [
+              {
+                "type": "string",
+                "example": "J. Rowling"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "example": [
+                  "J.Rowling",
+                  "Author Name 2..."
+                ]
+              }
+            ]
+          },
+          "genre": {
+            "oneOf": [
+              {
+                "type": "string",
+                "example": [
+                  "fantasy",
+                  "roman"
+                ]
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "example": [
+                  "fantasy",
+                  "roman"
+                ]
+              }
+            ]
+          },
+          "description": {
+            "type": "string",
+            "example": "The story follows Harry Potter, who has been asked by Dumbledore to find and destroy Lord Voldemort's secret to immortality – the Horcruxes."
+          }
+        }
+      },
+      "ErrorNoMessage": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "example": 400
+          },
+          "HTTP-message": {
+            "type": "string",
+            "example": "400 | Bad Request"
+          }
+        }
+      },
+      "ErrorWithMessage": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "example": 400
+          },
+          "HTTP-message": {
+            "type": "string",
+            "example": "400 | Bad Request"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "field_name": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "example": [
+                  "Field name is required"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "Success": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "example": 200
+          },
+          "HTTP-message": {
+            "type": "string",
+            "example": "200 | OK"
+          },
+          "message": {
+            "type": "string",
+            "example": "Book has been created"
+          }
+        }
+      },
+      "RegisterUser": {
+        "type": "object",
+        "required": [
+          "name",
+          "email",
+          "password"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "John Doe"
+          },
+          "email": {
+            "type": "string",
+            "example": "john@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "example": 12345678
+          }
+        }
+      },
+      "LoginUser": {
+        "type": "object",
+        "required": [
+          "email",
+          "password"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "john@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "example": 12345678
+          }
+        }
+      }
+    }
+  }
+}

@@ -34,7 +34,7 @@ class LoginController extends Controller
 
     public function refresh(RequestInterface $request): JsonResponse
     {
-        $token = $request->cookie['_logid'] ?? $request->input('string')['string'] ?? '';
+        $token = $request->input('token')['token'] ?? $request->cookie['_logid'] ?? '';
 
         try {
             $newTokens = $this->loginService->refresh($token);
@@ -47,7 +47,8 @@ class LoginController extends Controller
 
     public function logout(RequestInterface $request): JsonResponse
     {
-        $token = $request->cookie['_logid'] ?? '';
+        $token = $request->input('token')['token'] ?? $request->cookie['_logid'] ?? '';
+
         if(! $token){
             return new JsonResponse(Response::UNAUTHORIZED);
         }

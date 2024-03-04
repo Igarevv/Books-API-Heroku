@@ -12,7 +12,7 @@ class Route
       'DELETE' => [],
     ];
 
-    public static function get(string $uri, array $controllers): RouteConfiguration
+    public static function get(string $uri, array|callable $controllers): RouteConfiguration
     {
         $routeHandler = new RouteConfiguration($uri, $controllers[0], $controllers[1]);
         self::$routes['GET'][] = $routeHandler;
