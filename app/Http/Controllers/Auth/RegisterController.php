@@ -22,8 +22,7 @@ class RegisterController extends Controller
         try {
             if (! $this->registerService->validate($userData)) {
                 return new JsonResponse(Response::BAD_REQUEST,
-                  $this->registerService->errors()
-                );
+                  $this->registerService->errors(), true);
             }
 
             $this->registerService->createUser($userData);
@@ -33,4 +32,5 @@ class RegisterController extends Controller
             return new JsonResponse($e->getCode(), $e->getMessage());
         }
     }
+
 }

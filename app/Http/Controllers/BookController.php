@@ -34,7 +34,7 @@ class BookController
         try {
             if (! $this->bookService->validate($bookData)) {
                 return new JsonResponse(Response::BAD_REQUEST,
-                $this->bookService->errors());
+                $this->bookService->errors(), true);
             }
             $bookDto = $this->bookService->bookDto();
 
