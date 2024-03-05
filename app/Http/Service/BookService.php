@@ -26,14 +26,16 @@ class BookService
     {
         $limit = 0;
         $offset = 0;
-        if (is_numeric($limitOffset) && $limitOffset > 0) {
-            $values = explode(',', $limitOffset);
+        $values = $this->validateRange($limitOffset);
+
+        if ($values) {
             if (isset($values[1])) {
                 [$offset, $limit] = $values;
             } else {
                 $limit = $values[0];
             }
         }
+
         $books = $this->repository->findBooks($offset, $limit);
 
         if(! $books){
@@ -116,5 +118,19 @@ class BookService
     public function errors(): array
     {
         return $this->validator->errors();
+    }
+
+    protected function validateRange(?string $input): array|false
+    {
+        if(! $input){
+            return false;
+        }
+        $values = explode(',', $input);
+        foreach ($values as $value){
+            if (! is_numeric($value) || $value < 0){
+               return false;
+            }
+        }
+        return $values;
     }
 }
