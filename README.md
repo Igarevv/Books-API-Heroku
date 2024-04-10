@@ -13,7 +13,6 @@
 ````
 docker-compose up --build -d
 ````
-**NOTE**: After docker containers start, you may **need to wait** a few minutes (2 min avg), because the database container needs some more time to initialize itself.
 
 ### To set or unset admin status:
 ````
