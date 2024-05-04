@@ -18,13 +18,3 @@ EXPOSE 9000
 
 RUN chown www-data:www-data /var/www/nginx/books-api/books.csv
 
-FROM mysql:latest
-
-COPY ./././database/dump.sql /docker-entrypoint-initdb.d/dump.sql
-
-ENV MYSQL_ROOT_PASSWORD=0375Ihor_
-ENV MYSQL_PASSWORD=Devbase75_
-ENV MYSQL_USER=dev
-ENV MYSQL_DATABASE=BookAPI
-
-VOLUME /var/lib/mysql
