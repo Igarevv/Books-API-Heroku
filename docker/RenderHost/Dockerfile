@@ -18,7 +18,7 @@ EXPOSE 9000
 
 RUN chown www-data:www-data /var/www/nginx/books-api/books.csv
 
-FROM render-examples/mysql
+FROM mysql:latest
 
 COPY ./././database/dump.sql /docker-entrypoint-initdb.d/dump.sql
 
