@@ -2,9 +2,9 @@ FROM nginx:latest
 
 RUN rm /etc/nginx/conf.d/default.conf
 
-COPY /docker/nginx/books-api.conf /etc/nginx/conf.d/books-api.conf
+COPY ././nginx/books-api.conf /etc/nginx/conf.d/books-api.conf
 
-COPY . /var/www/nginx/books-api
+COPY ./././ /var/www/nginx/books-api
 
 FROM php:8.1-fpm
 
@@ -20,7 +20,7 @@ RUN chown www-data:www-data /var/www/nginx/books-api/books.csv
 
 FROM mysql:latest
 
-COPY /././database/dump.sql /docker-entrypoint-initdb.d/dump.sql
+COPY ./././database/dump.sql /docker-entrypoint-initdb.d/dump.sql
 
 ENV MYSQL_ROOT_PASSWORD=0375Ihor_
 ENV MYSQL_PASSWORD=Devbase75_
