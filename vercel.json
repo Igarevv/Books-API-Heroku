@@ -7,10 +7,7 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/public/index.php",
-      "app": "app",
-      "configs": "configs",
-      "vendor": "vendor"
+      "destination": "/public/index.php"
     }
   ]
 }
