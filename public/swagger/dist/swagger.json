@@ -2,7 +2,6 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Book-API",
-    "description": "Practice task for KeepSolid, created by SUITT student **Kirshenuik Ihor**",
     "version": "0.0.1"
   },
   "servers": [
