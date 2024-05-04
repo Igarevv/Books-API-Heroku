@@ -16,6 +16,8 @@ services:
       - nginx-php-mysql
   php:
     container_name: php-fpm
+    ports:
+      - "42203:9000"
     build:
       context: .
       dockerfile: docker/php/Dockerfile
