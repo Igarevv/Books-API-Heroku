@@ -7,9 +7,6 @@ header("Access-Control-Allow-Headers: Authorization, Content-Type, X-Forwarded-W
 header("Access-Control-Allow-Methods: GET, POST, DELETE");
 
 if ($_SERVER['REQUEST_URI'] === '/swagger'){
-    header("Access-Control-Allow-Origin: *");
-    header("Access-Control-Allow-Headers: Authorization, Content-Type, X-Forwarded-With");
-    header("Access-Control-Allow-Methods: GET, POST, DELETE");
     require APP_PATH . '/public/swagger/index.php';
     exit();
 }
