@@ -19,7 +19,10 @@ $dotenv = new Dotenv();
 $dotenv->load(APP_PATH.'/.env');
 
 $container = new \App\Core\Container\Container();
-$router = new \App\Core\Routes\Router($container);
+
+$routes = require APP_PATH . '/configs/routes.php';
+
+$router = new \App\Core\Routes\Router($container, $routes);
 $config = new \App\Config\Config();
 
 (new App($container, $router, $config))->run();

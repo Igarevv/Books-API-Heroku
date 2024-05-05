@@ -16,7 +16,8 @@ class Router implements RouteInterface
     private ResponseInterface $response;
 
     public function __construct(
-      private readonly Container $container
+      private readonly Container $container,
+      private readonly array $routes
     ) {
         $this->getRoutesFromConfig();
     }
@@ -61,9 +62,8 @@ class Router implements RouteInterface
     private function findRoute(string $uri, string $method): array|false
     {
         $routeDispatcher = new RouteDispatcher();
-        $routes = Route::getRoutes($method);
-        var_dump($routes);
-        foreach ($routes as $routeConfiguration) {
+
+        foreach ($this->routes as $routeConfiguration) {
             $dispatchRoute = $routeDispatcher->dispatch($routeConfiguration, $uri);
 
             if ($dispatchRoute !== false) {
