@@ -3,7 +3,7 @@ window.onload = function() {
 
   // the following lines will be replaced by docker/configurator, when it runs in a docker-container
   window.ui = SwaggerUIBundle({
-    url: "https://sleepy-everglades-57627-a28a0b484e07.herokuapp.com/public/swagger/dist/swagger.json",
+    url: "https://sleepy-everglades-57627-a28a0b484e07.herokuapp.com/swagger/dist/swagger.json",
     dom_id: '#swagger-ui',
     deepLinking: true,
     presets: [
