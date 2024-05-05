@@ -9,7 +9,7 @@
 ];*/
 
 return [
-  'driver'   => 'mysql',
+  'driver'   => 'pgsql',
   'dbname'   => 'dd5fa6l2aac8ac',
   'host'     => 'cf9gid2f6uallg.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com', // mysql for docker, localhost for local
   'user'     => 'u9120be039bei0',
