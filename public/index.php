@@ -21,7 +21,7 @@ $dotenv->load(APP_PATH.'/.env');
 $container = new \App\Core\Container\Container();
 
 $routes = require APP_PATH . '/configs/routes.php';
-
+var_dump($routes);
 $router = new \App\Core\Routes\Router($container, $routes);
 $config = new \App\Config\Config();
 
