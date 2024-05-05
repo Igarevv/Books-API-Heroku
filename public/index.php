@@ -7,6 +7,7 @@ header("Access-Control-Allow-Headers: Authorization, Content-Type, X-Forwarded-W
 header("Access-Control-Allow-Methods: GET, POST, DELETE");
 
 define('APP_PATH', dirname(__DIR__));
+var_dump(APP_PATH);
 require_once APP_PATH.'/vendor/autoload.php';
 
 $dotenv = new Dotenv();
