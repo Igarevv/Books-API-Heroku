@@ -28,6 +28,7 @@ class App
     public function run(): void
     {
         $request = $this->container->get(RequestInterface::class);
+        var_dump($request->uri());
         $this->router->dispatch(
           $request->uri(),
           $request->method(),

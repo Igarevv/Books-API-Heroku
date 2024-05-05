@@ -62,7 +62,7 @@ class Router implements RouteInterface
     {
         $routeDispatcher = new RouteDispatcher();
         $routes = Route::getRoutes($method);
-
+        var_dump($routes);
         foreach ($routes as $routeConfiguration) {
             $dispatchRoute = $routeDispatcher->dispatch($routeConfiguration, $uri);
 
