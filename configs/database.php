@@ -12,7 +12,7 @@ use Symfony\Component\Dotenv\Dotenv;
 
 //For Heroku
 
-$db = parse_url(getenv("DB_URL"));
+$db = parse_url("postgres://u3ie1bpsuob73q:pb33ac2648631cb865e8f21145b03bf486fa3e7c786ef967cea366d2f1312f66c@c7vbm80blivm58.cluster-czz5s0kz4scl.eu-west-1.rds.amazonaws.com:5432/dccbia0l7bl0i6");
 
 $pdo = "pgsql:" . sprintf(
     "host=%s;port=%s;user=%s;password=%s;dbname=%s",

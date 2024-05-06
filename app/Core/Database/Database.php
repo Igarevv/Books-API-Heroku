@@ -38,10 +38,10 @@ class Database implements DatabaseInterface
     private function connect(): void
     {
         $driver = $this->config->get('database.driver');
-        $host = $this->config->get('database.host');
+/*        $host = $this->config->get('database.host');
         $dbname = $this->config->get('database.dbname');
         $user = $this->config->get('database.user');
-        $password = $this->config->get('database.password');
+        $password = $this->config->get('database.password');*/
 
         $defaultOptions = [
           PDO::ATTR_EMULATE_PREPARES => false,
