@@ -4,12 +4,6 @@
 
 Created with plain PHP without frameworks.
 
-<li>Registration and login using JWT</li>
-<li>CRUD operations with books</li>
-<li>Adding and removing books from the "user favorites" list</li>
-<li>Saving a list of books in CSV format</li>
-<li>Docker support</li>
-
 **App requires** .env with:
 JWTKEY, REFRESH_LIFE_TIME, DB_URL
 
