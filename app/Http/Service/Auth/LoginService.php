@@ -37,10 +37,10 @@ class LoginService
         $tokens = $this->tokenService->generateTokens($data);
 
         $this->tokenService->saveToken($userId, $tokens['refreshToken'],
-          time() + $_ENV['REFRESH_LIVE_TIME']);
+          time() + $_ENV['REFRESH_LIFE_TIME']);
 
         Cookie::set('_logid', $tokens['refreshToken'],
-          $_ENV['REFRESH_LIVE_TIME'], '/api/auth');
+          $_ENV['REFRESH_LIFE_TIME'], '/api/auth');
 
         return $tokens;
     }
@@ -70,10 +70,10 @@ class LoginService
         $tokens = $this->tokenService->generateTokens($data);
 
         $this->tokenService->saveToken($userDto->getUserId(),
-          $tokens['refreshToken'], time() + $_ENV['REFRESH_LIVE_TIME']);
+          $tokens['refreshToken'], time() + $_ENV['REFRESH_LIFE_TIME']);
 
         Cookie::set('_logid', $tokens['refreshToken'],
-          $_ENV['REFRESH_LIVE_TIME'], '/api/auth');
+          $_ENV['REFRESH_LIFE_TIME'], '/api/auth');
         return $tokens;
     }
 

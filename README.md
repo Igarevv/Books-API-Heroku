@@ -1,32 +1,51 @@
 ## Book-API
 
-### __Swagger Documentation__ available in http://localhost:8000/swagger
-
 **API functionality**:
+
+Created with plain PHP without frameworks.
+
 <li>Registration and login using JWT</li>
 <li>CRUD operations with books</li>
 <li>Adding and removing books from the "user favorites" list</li>
 <li>Saving a list of books in CSV format</li>
 <li>Docker support</li>
 
-### To run:
+**App requires** .env with:
+JWTKEY, REFRESH_LIFE_TIME, DB_URL
+
+The program is hosted on www.heroku.com, _but is not currently running._
+
+### Deploying steps in Heroku
+
+1) Install Heroku CLI
+2) heroku login
+3) Procfile - web: vendor/bin/heroku-php-apache2 public/ (or else)
+4) heroku create
+
+Heroku requires composer.json and composer.lock. Vendor should be deleted.
+
+### To deploy new version on Heroku
 ````
-docker-compose up --build -d
+git add <.>
+````
+````
+git commit -m "..."
+````
+````
+git push heroku master
 ````
 
-### To set or unset admin status:
-````
-docker exec -it php-fpm sh -c "php app/Role/index.php <user id> admin"
-````
-or
-````
-docker exec -it php-fpm sh -c "php app/Role/index.php <user id> user"
-````
+### To execute PostgreSQL
 
-### To save books in CSV format:
-Use endpoint __/api/admin/books/save__.
-To open the file use command:
+Add .sql file with tables using this command
 ````
-docker exec -it php-fpm cat /var/www/nginx/books-api/books.csv
+heroku pg:psql --app <app name> < <sql file source>
 ````
-
+### To run Heroku bash
+````
+heroku run bash --app <app name>
+````
+### Heroku logs
+````
+heroku logs --tail
+````
