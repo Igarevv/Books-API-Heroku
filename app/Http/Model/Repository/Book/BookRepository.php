@@ -17,14 +17,14 @@ class BookRepository implements BookRepositoryInterface
 
     public function findBooks(int $limit = 0, int $offset = 0, mixed $book_id = null, mixed $user_id = null): array
     {
-        $sql = SelectQueryBuilder::table('Book', 'B')
+        $sql = SelectQueryBuilder::table("\"Book\"", 'B')
           ->select('B.book_id', 'B.title', 'B.year', 'B.isbn',
             "string_agg(DISTINCT Genre.genre_name, ', ') AS genre", "string_agg(DISTINCT Author.name, ', ') AS author",
             'B.description')
-          ->join('Book_Genre', 'book_id', '=', 'B.book_id')
-          ->join('Book_Author', 'book_id', '=', 'B.book_id')
-          ->join('Genre', 'genre_id', '=', 'Book_Genre.genre_id')
-          ->join('Author', 'author_id', '=', 'Book_Author.author_id');
+          ->join("\"Book_Genre\"", 'book_id', '=', 'B.book_id')
+          ->join("\"Book_Author\"", 'book_id', '=', 'B.book_id')
+          ->join("\"Genre\"", 'genre_id', '=', "\"Book_Genre\".genre_id")
+          ->join("\"Author\"", 'author_id', '=', "\"Book_Author\".author_id");
 
         if($book_id !== null && $user_id !== null){
             return $this->getOneFavoriteBookById($sql, $book_id, $user_id);
@@ -53,7 +53,7 @@ class BookRepository implements BookRepositoryInterface
 
         $this->database->beginTransaction();
         try {
-            $bookId = $this->insertData('Book', $data);
+            $bookId = $this->insertData("\"Book\"", $data);
 
             $this->insertGenresWithRelation($bookId, $genres);
 
@@ -70,7 +70,7 @@ class BookRepository implements BookRepositoryInterface
 
     public function deleteBook(int $bookId): bool
     {
-        $sql = DeleteQueryBuilder::table('Book')
+        $sql = DeleteQueryBuilder::table("\"Book\"")
           ->where('book_id', '=', 'book_id')
           ->getQuery();
         $stmt = $this->database->execute($sql, [':book_id' => $bookId]);
@@ -80,7 +80,7 @@ class BookRepository implements BookRepositoryInterface
 
     public function isBookExists(int $book_id): bool
     {
-        $sql = SelectQueryBuilder::table('Book')
+        $sql = SelectQueryBuilder::table("\"Book\"")
           ->select('*')
           ->where('book_id', '=', 'book_id')
           ->limit(1)
@@ -164,20 +164,20 @@ class BookRepository implements BookRepositoryInterface
 
     private function insertGenresWithRelation(int $bookId, array $genres): void
     {
-        $genresId = $this->findOrCreateEntity('Genre', 'genre_id', 'genre_name',
+        $genresId = $this->findOrCreateEntity("\"Genre\"", 'genre_id', 'genre_name',
           $genres);
         foreach ($genresId as $genreId) {
-            $this->insertRelation('Book_Genre',
+            $this->insertRelation("\"Book_Genre\"",
               ['book_id' => $bookId, 'genre_id' => $genreId]);
         }
     }
 
     private function insertAuthorsWithRelation(int $bookId, array $authors): void
     {
-        $authorsId = $this->findOrCreateEntity('Author', 'author_id', 'name',
+        $authorsId = $this->findOrCreateEntity("\"Author\"", 'author_id', 'name',
           $authors);
         foreach ($authorsId as $authorId) {
-            $this->insertRelation('Book_Author',
+            $this->insertRelation("\"Book_Author\"",
               ['book_id' => $bookId, 'author_id' => $authorId]);
         }
     }
@@ -198,7 +198,7 @@ class BookRepository implements BookRepositoryInterface
 
     private function getAllFavoriteBooks(SelectQueryBuilder $sql, mixed $user_id, int $limit, int $offset): array
     {
-        $sql->join('User_Book', 'book_id', '=', 'B.book_id')
+        $sql->join("\"User_Book\"", 'book_id', '=', 'B.book_id')
           ->where('user_id', '=', 'user_id')
           ->groupBy('B.book_id', 'B.title', 'B.year', 'B.isbn')
           ->limit($offset, $limit);
@@ -208,8 +208,8 @@ class BookRepository implements BookRepositoryInterface
 
     private function getOneFavoriteBookById(SelectQueryBuilder $sql, mixed $user_id, mixed $book_id ): array
     {
-        $sql->join('User_Book', 'book_id', '=', 'B.book_id')
-          ->where('User_Book.user_id', '=', 'user_id')
+        $sql->join("\"User_Book\"", 'book_id', '=', 'B.book_id')
+          ->where("\"User_Book\".user_id", '=', 'user_id')
           ->where('B.book_id', '=', 'book_id')
           ->groupBy('B.book_id', 'B.title', 'B.year', 'B.isbn');
 
