@@ -1,9 +1,13 @@
 <?php
 
-ini_set("log_errors", 1);
+use App\App;
+use App\Config\Config;
+use App\Core\Container\Container;
+use App\Core\Routes\Router;
+use Symfony\Component\Dotenv\Dotenv;
 
-use docker\app\App;
-use docker\vendor\symfony\dotenv\Dotenv;
+error_reporting(0);
+
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: Authorization, Content-Type, X-Forwarded-With");
@@ -16,12 +20,12 @@ require_once APP_PATH.'/vendor/autoload.php';
 $dotenv = new Dotenv();
 $dotenv->load(APP_PATH.'/.env');
 
-$container = new docker\app\Core\Container\Container();
+$container = new Container();
 
 $routes = require APP_PATH . '/configs/routes.php';
 
-$router = new docker\app\Core\Routes\Router($container, $routes);
-$config = new docker\app\Config\Config();
+$router = new Router($container, $routes);
+$config = new Config();
 
 (new App($container, $router, $config))->run();
 

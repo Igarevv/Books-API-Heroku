@@ -2,7 +2,7 @@
 
 namespace App\Core\Routes;
 
-use Booksuse Booksclass RouteDispatcher
+class RouteDispatcher
 {
     private string $requestUri;
     private array $matchedRoutes = [];

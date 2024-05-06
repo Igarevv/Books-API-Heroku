@@ -1,16 +1,8 @@
 <?php
-use docker\vendor\symfony\dotenv\Dotenv;
-
-// For local
-/*return [
-  'driver'   => 'mysql',
-  'dbname'   => 'BookAPI',
-  'host'     => 'mysql', // mysql for docker, localhost for local
-  'user'     => 'dev',
-  'password' => 'Devbase75_',
-];*/
 
 //For Heroku
+
+use Symfony\Component\Dotenv\Dotenv;
 
 $dotenv = new Dotenv();
 $dotenv->load(APP_PATH.'/.env');

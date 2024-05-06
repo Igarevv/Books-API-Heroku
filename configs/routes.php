@@ -2,13 +2,13 @@
 
 namespace App\Config;
 
-use docker\app\Core\Routes\Route;
-use docker\app\Http\Controllers\Auth\LoginController;
-use docker\app\Http\Controllers\Auth\RegisterController;
-use docker\app\Http\Controllers\BookController;
-use docker\app\Http\Controllers\FileController;
-use docker\app\Http\Controllers\HomeController;
-use docker\app\Http\Controllers\UserController;
+use App\Core\Routes\Route;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\BookController;
+use App\Http\Controllers\FileController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
 
 return [
   Route::get('/api', [HomeController::class, 'index']),

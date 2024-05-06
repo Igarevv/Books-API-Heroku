@@ -2,10 +2,9 @@
 
 namespace App\Http\Middleware;
 
-use docker\app\Core\Helpers\JWTHelper;
-use docker\app\Core\Http\Response\JsonResponse;
-use docker\app\Core\Http\Response\Response;
-use Books
+use App\Core\Helpers\JWTHelper;
+use App\Core\Http\Response\JsonResponse;
+use App\Core\Http\Response\Response;
 
 class AuthMiddleware extends AbstractMiddleware
 {

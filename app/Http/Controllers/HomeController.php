@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-use docker\app\Core\Controller\Controller;
-use docker\app\Core\Http\Response\JsonResponse;
-use docker\app\Core\Http\Response\Response;
+
+use App\Core\Controller\Controller;
+use App\Core\Http\Response\JsonResponse;
+use App\Core\Http\Response\Response;
 
 class HomeController extends Controller
 {

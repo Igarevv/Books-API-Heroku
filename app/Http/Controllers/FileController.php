@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use docker\app\Core\Http\Response\JsonResponse;
-use docker\app\Core\Http\Response\Response;
-use docker\app\Http\Exceptions\NotFoundException;
-use docker\app\Http\Exceptions\ServerException;
-use docker\app\Http\Service\FileService;
+
+use App\Core\Http\Response\JsonResponse;
+use App\Http\Exceptions\NotFoundException;
+use App\Http\Exceptions\ServerException;
+use App\Http\Service\FileService;
 
 class FileController
 {

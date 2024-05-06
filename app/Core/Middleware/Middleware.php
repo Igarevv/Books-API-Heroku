@@ -2,15 +2,16 @@
 
 namespace App\Core\Middleware;
 
-use docker\app\Core\Http\Request\RequestInterface;
-use docker\app\Http\Middleware\AdminMiddleware;
-use docker\app\Http\Middleware\AuthMiddleware;
+
+use App\Core\Http\Request\RequestInterface;
+use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\AuthMiddleware;
 
 class Middleware
 {
     public const MAP = [
-      'auth'  => docker\app\Http\Middleware\AuthMiddleware::class,
-      'admin' => docker\app\Http\Middleware\AdminMiddleware::class
+      'auth'  => AuthMiddleware::class,
+      'admin' => AdminMiddleware::class
     ];
     public static function resolve(string $key): string
     {

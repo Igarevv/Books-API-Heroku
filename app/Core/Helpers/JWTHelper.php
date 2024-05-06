@@ -2,9 +2,8 @@
 
 namespace App\Core\Helpers;
 
-use docker\app\Core\Http\Request\RequestInterface;
-use jwt\src\JWT;
-use jwt\src\Key;
+
+use App\Core\Http\Request\RequestInterface;
 
 class JWTHelper
 {

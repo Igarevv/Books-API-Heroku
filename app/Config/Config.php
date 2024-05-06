@@ -2,7 +2,7 @@
 
 namespace App\Config;
 
-use Booksclass Config implements ConfigInterface
+class Config implements ConfigInterface
 {
     public function get(string $key, $default = null): mixed
     {

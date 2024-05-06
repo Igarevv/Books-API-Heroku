@@ -17,7 +17,7 @@ class RouteConfiguration
         $this->index = $index;
     }
 
-    public function only(string $middleware): docker\app\Core\Routes\RouteConfiguration
+    public function only(string $middleware): RouteConfiguration
     {
         $this->middleware[] = $middleware;
         return $this;

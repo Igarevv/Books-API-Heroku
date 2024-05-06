@@ -2,20 +2,19 @@
 
 namespace App\Http\Controllers\Auth;
 
-use docker\app\Core\Controller\Controller;
-use docker\app\Core\Cookie\Cookie;
-use docker\app\Core\Http\Request\RequestInterface;
-use docker\app\Core\Http\Response\JsonResponse;
-use docker\app\Core\Http\Response\Response;
-use docker\app\Http\Exceptions\LoginException;
-use docker\app\Http\Exceptions\NotFoundException;
-use docker\app\Http\Service\Auth\LoginService;
+use App\Core\Controller\Controller;
+use App\Core\Http\Request\RequestInterface;
+use App\Core\Http\Response\JsonResponse;
+use App\Core\Http\Response\Response;
+use App\Http\Exceptions\LoginException;
+use App\Http\Exceptions\NotFoundException;
+use App\Http\Service\Auth\LoginService;
 
 class LoginController extends Controller
 {
 
     public function __construct(
-      protected docker\app\Http\Service\Auth\LoginService $loginService
+      protected LoginService $loginService
     ) {}
 
     public function login(RequestInterface $request): JsonResponse

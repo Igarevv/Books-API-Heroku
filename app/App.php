@@ -2,11 +2,11 @@
 
 namespace App;
 
-use docker\app\Config\Config;
-use docker\app\Core\Container\Container;
-use docker\app\Core\Database\DatabaseInterface;
-use docker\app\Core\Http\Request\RequestInterface;
-use docker\app\Core\Routes\Router;
+use App\Config\Config;
+use App\Core\Container\Container;
+use App\Core\Database\DatabaseInterface;
+use App\Core\Http\Request\RequestInterface;
+use App\Core\Routes\Router;
 
 class App
 {

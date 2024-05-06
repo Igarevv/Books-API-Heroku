@@ -2,13 +2,11 @@
 
 namespace App\Http\Service\Auth;
 
-use docker\app\Core\Cookie\Cookie;
-use docker\app\Http\Exceptions\LoginException;
-use docker\app\Http\Exceptions\NotFoundException;
-use docker\app\Http\Model\DTO\User;
-use docker\app\Http\Model\Repository\User\UserRepositoryInterface;
-use docker\app\Http\Service\FieldValidationService;
-use Books
+use App\Core\Cookie\Cookie;
+use App\Http\Exceptions\LoginException;
+use App\Http\Model\DTO\User;
+use App\Http\Model\Repository\User\UserRepositoryInterface;
+use App\Http\Service\FieldValidationService;
 
 class LoginService
 {
@@ -20,9 +18,6 @@ class LoginService
       private readonly TokenService $tokenService,
     ) {}
 
-    /**
-     * @throws docker\app\Http\Exceptions\LoginException
-     */
     public function login(User $userDto, string $password): array
     {
         if (! password_verify($password, $this->userData['password'])) {
@@ -46,9 +41,6 @@ class LoginService
         return $tokens;
     }
 
-    /**
-     * @throws docker\app\Http\Exceptions\LoginException
-     */
     public function refresh(string $refreshToken): array
     {
         $tokenFromDb = $this->tokenService->findToken($refreshToken);
@@ -106,9 +98,6 @@ class LoginService
         return new User($user['id'], $user['name'], $user['email'], $role);
     }
 
-    /**
-     * @throws docker\app\Http\Exceptions\LoginException
-     */
     public function getUserByEmail(array $data): User
     {
         if (! $this->isInputFormatValid($data)) {

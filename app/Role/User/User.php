@@ -2,10 +2,10 @@
 
 namespace App\Role\User;
 
-use Booksuse docker\app\Core\Database\DatabaseInterface;
-use docker\app\Core\Database\Select\SelectQueryBuilder;
-use docker\app\Core\Database\Update\UpdateQueryBuilder;
-use docker\vendor\psr\container\src\ContainerInterface;
+use App\Core\Database\DatabaseInterface;
+use App\Core\Database\Select\SelectQueryBuilder;
+use App\Core\Database\Update\UpdateQueryBuilder;
+use Psr\Container\ContainerInterface;
 
 class User implements UserInterface
 {

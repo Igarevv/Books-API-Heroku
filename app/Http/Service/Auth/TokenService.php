@@ -2,9 +2,8 @@
 
 namespace App\Http\Service\Auth;
 
-use docker\app\Http\Model\DTO\Tokens;
-use docker\app\Http\Model\Repository\Token\TokenRepositoryInterface;
-use jwt\src\JWT;
+use App\Http\Model\DTO\Tokens;
+use App\Http\Model\Repository\Token\TokenRepositoryInterface;
 
 class TokenService
 {
@@ -16,7 +15,6 @@ class TokenService
     public function generateTokens(array $data): array
     {
         $payload = [
-          'iss'  => 'http://api.books.com',
           'iat'  => time(),
           'exp'  => time() + 900,
           'data' => $data,

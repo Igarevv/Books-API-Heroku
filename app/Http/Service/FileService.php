@@ -2,22 +2,18 @@
 
 namespace App\Http\Service;
 
-use docker\app\Core\Http\Response\Response;
-use docker\app\Http\Exceptions\NotFoundException;
-use docker\app\Http\Exceptions\ServerException;
-use docker\app\Http\Model\Repository\Book\BookRepository;
+use App\Core\Http\Response\Response;
+use App\Http\Exceptions\NotFoundException;
+use App\Http\Exceptions\ServerException;
+use App\Http\Model\Repository\Book\BookRepositoryInterface;
 
 class FileService
 {
 
     public function __construct(
-      protected readonly BookRepository $repository
+      protected readonly BookRepositoryInterface $repository
     ) {}
 
-    /**
-     * @throws docker\app\Http\Exceptions\NotFoundException
-     * @throws docker\app\Http\Exceptions\ServerException
-     */
     public function saveCSV(): void
     {
         $books = $this->repository->findBooks();

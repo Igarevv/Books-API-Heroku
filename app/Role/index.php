@@ -1,9 +1,9 @@
 <?php
 
-use docker\app\Core\Container\Container;
-use docker\app\Role\User\User;
-use docker\app\Role\Exception\RoleManagementException;
-use docker\app\Role\User\Role;
+use App\Core\Container\Container;
+use App\Role\Exception\RoleManagementException;
+use App\Role\User\Role;
+use App\Role\User\User;
 
 define('APP_PATH', realpath(dirname(__DIR__, 2)));
 

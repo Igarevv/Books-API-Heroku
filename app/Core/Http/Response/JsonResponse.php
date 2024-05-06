@@ -2,7 +2,7 @@
 
 namespace App\Core\Http\Response;
 
-use Booksuse Booksclass JsonResponse extends Response implements ResponseInterface
+class JsonResponse extends Response implements ResponseInterface
 {
     protected int $status;
 

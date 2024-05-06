@@ -2,7 +2,7 @@
 
 namespace App\Core\Database\Select;
 
-use docker\app\Core\Database\AbstractQueryBuilder;
+use App\Core\Database\AbstractQueryBuilder;
 
 class SelectQueryBuilder extends AbstractQueryBuilder
 {
@@ -12,12 +12,12 @@ class SelectQueryBuilder extends AbstractQueryBuilder
     protected array $groupBy = [];
     protected int $offset = 0;
     protected int $limit = 0;
-    public function select(...$columns): docker\app\Core\Database\Select\SelectQueryBuilder
+    public function select(...$columns): SelectQueryBuilder
     {
         $this->columns = $columns;
         return $this;
     }
-    public function where(string $column, string $operator, string $prepareColumn): docker\app\Core\Database\Select\SelectQueryBuilder
+    public function where(string $column, string $operator, string $prepareColumn): SelectQueryBuilder
     {
         $this->conditions[] = [$column, $operator, " :".$prepareColumn];
         return $this;
@@ -29,7 +29,7 @@ class SelectQueryBuilder extends AbstractQueryBuilder
       string $operator,
       string $joinColumn,
       string $joinType = ''
-    ): docker\app\Core\Database\Select\SelectQueryBuilder
+    ): SelectQueryBuilder
     {
         $this->joiner[] = [
           'type'     => $joinType,
@@ -40,12 +40,12 @@ class SelectQueryBuilder extends AbstractQueryBuilder
         ];
         return $this;
     }
-    public function groupBy(...$columns): docker\app\Core\Database\Select\SelectQueryBuilder
+    public function groupBy(...$columns): SelectQueryBuilder
     {
         $this->groupBy = $columns;
         return $this;
     }
-    public function limit(int $limit, int $offset = 0): docker\app\Core\Database\Select\SelectQueryBuilder
+    public function limit(int $limit, int $offset = 0): SelectQueryBuilder
     {
         $this->limit = $limit;
         $this->offset = $offset;

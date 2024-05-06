@@ -2,7 +2,7 @@
 
 namespace App\Core\Validator;
 
-use Booksuse Booksclass Validator implements ValidatorInterface
+class Validator implements ValidatorInterface
 {
     protected array $errors;
 

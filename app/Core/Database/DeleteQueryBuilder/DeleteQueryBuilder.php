@@ -2,12 +2,13 @@
 
 namespace App\Core\Database\DeleteQueryBuilder;
 
-use docker\app\Core\Database\AbstractQueryBuilder;
+
+use App\Core\Database\AbstractQueryBuilder;
 
 class DeleteQueryBuilder extends AbstractQueryBuilder
 {
     protected array $conditions = [];
-    public function where(string $column, string $operator, string $prepareColumn): docker\app\Core\Database\DeleteQueryBuilder\DeleteQueryBuilder
+    public function where(string $column, string $operator, string $prepareColumn): DeleteQueryBuilder
     {
         $this->conditions[] = [$column, $operator, " :".$prepareColumn];
         return $this;

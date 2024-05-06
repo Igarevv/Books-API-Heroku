@@ -2,13 +2,13 @@
 
 namespace App\Http\Service;
 
-use Booksuse docker\app\Core\Http\Response\Response;
-use docker\app\Core\Validator\ValidatorInterface;
-use docker\app\Http\Exceptions\ServerException;
-use docker\app\Http\Exceptions\DataException;
-use docker\app\Http\Exceptions\NotFoundException;
-use docker\app\Http\Model\DTO\Book;
-use docker\app\Http\Model\Repository\Book\BookRepositoryInterface;
+use App\Core\Http\Response\Response;
+use App\Core\Validator\ValidatorInterface;
+use App\Http\Exceptions\DataException;
+use App\Http\Exceptions\NotFoundException;
+use App\Http\Exceptions\ServerException;
+use App\Http\Model\DTO\Book;
+use App\Http\Model\Repository\Book\BookRepositoryInterface;
 
 class BookService
 {
@@ -19,9 +19,6 @@ class BookService
       private readonly BookRepositoryInterface $repository
     ) {}
 
-    /**
-     * @throws docker\app\Http\Exceptions\NotFoundException
-     */
     public function showAllBooks(?string $limitOffset): array
     {
         $limit = 0;
@@ -44,9 +41,6 @@ class BookService
         return $books;
     }
 
-    /**
-     * @throws docker\app\Http\Exceptions\NotFoundException
-     */
     public function showOneBook(mixed $book_id): array
     {
         $book = $this->repository->findBooks(book_id: $book_id);
@@ -55,9 +49,7 @@ class BookService
         }
         return $book;
     }
-    /**
-     * @throws docker\app\Http\Exceptions\ServerException
-     */
+
     public function store(Book $bookDto): void
     {
         $result = $this->repository->insertBook($bookDto);
@@ -66,9 +58,6 @@ class BookService
         }
     }
 
-    /**
-     * @throws docker\app\Http\Exceptions\NotFoundException
-     */
     public function delete(mixed $bookId): void
     {
         if (!is_numeric($bookId)){
@@ -90,9 +79,6 @@ class BookService
           $this->bookData['description'], $this->bookData['isbn']);
     }
 
-    /**
-     * @throws docker\app\Http\Exceptions\DataException
-     */
     public function validate(array $data): bool
     {
         $rules = [

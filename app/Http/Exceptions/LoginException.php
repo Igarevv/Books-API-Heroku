@@ -2,7 +2,7 @@
 
 namespace App\Http\Exceptions;
 
-use docker\app\Core\Http\Response\Response;
+use App\Core\Http\Response\Response;
 
 class LoginException extends \Exception
 {

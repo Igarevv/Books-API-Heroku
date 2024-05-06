@@ -2,10 +2,6 @@
 
 namespace App\Core\Http\Request;
 
-use docker\app\Core\Http\Response\ResponseInterface;
-use docker\app\Core\Validator\Validator;
-use Booksuse Booksuse docker\app\Core\Validator\ValidatorInterface;
-
 class Request implements RequestInterface, JsonRequestInterface
 {
 

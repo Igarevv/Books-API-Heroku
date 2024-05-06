@@ -2,18 +2,18 @@
 
 namespace App\Core\Database\Update;
 
-use docker\app\Core\Database\AbstractQueryBuilder;
+use App\Core\Database\AbstractQueryBuilder;
 
 class UpdateQueryBuilder extends AbstractQueryBuilder
 {
     private array $columns = [];
     private array $conditions = [];
-    public function update(string $column, mixed $value): docker\app\Core\Database\Update\UpdateQueryBuilder
+    public function update(string $column, mixed $value): UpdateQueryBuilder
     {
         $this->columns[$column] = $value;
         return $this;
     }
-    public function where(string $column, string $operator, string $prepareColumn): docker\app\Core\Database\Update\UpdateQueryBuilder
+    public function where(string $column, string $operator, string $prepareColumn): UpdateQueryBuilder
     {
         $this->conditions[] = [$column, $operator, " :".$prepareColumn];
         return $this;
