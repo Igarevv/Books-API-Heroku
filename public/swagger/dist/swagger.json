@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "http://booksapishka-0cbbd46b29a4.herokuapp.com"
+      "url": "https://booksapishka-0cbbd46b29a4.herokuapp.com"
     }
   ],
   "paths": {
