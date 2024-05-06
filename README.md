@@ -10,6 +10,7 @@ Created with plain PHP without frameworks.
 <li>Saving a list of books in CSV format</li>
 <li>Docker support</li>
 
+
 **App requires** .env with:
 JWTKEY, REFRESH_LIFE_TIME, DB_URL
 
