@@ -1,4 +1,4 @@
 .idea
-/.env
-/composer.lock
-/Procfile
+./.env
+./composer.lock
+./Procfile
