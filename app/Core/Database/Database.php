@@ -38,7 +38,7 @@ class Database implements DatabaseInterface
     private function connect(): void
     {
         $params = $this->config->get('database');
-
+        print_r($params);
         $defaultOptions = [
           PDO::ATTR_EMULATE_PREPARES => false,
           PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
