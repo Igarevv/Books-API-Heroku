@@ -1,5 +1,7 @@
 <?php
+use Symfony\Component\Dotenv\Dotenv;
 
+// For local
 /*return [
   'driver'   => 'mysql',
   'dbname'   => 'BookAPI',
@@ -7,6 +9,8 @@
   'user'     => 'dev',
   'password' => 'Devbase75_',
 ];*/
+
+//For Heroku
 
 $dotEnv = new Dotenv();
 $dotEnv->load(APP_PATH.'/.env');
