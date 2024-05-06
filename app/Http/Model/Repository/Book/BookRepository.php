@@ -19,12 +19,12 @@ class BookRepository implements BookRepositoryInterface
     {
         $sql = SelectQueryBuilder::table("\"Book\"", 'B')
           ->select('B.book_id', 'B.title', 'B.year', 'B.isbn',
-            "string_agg(DISTINCT Genre.genre_name, ', ') AS genre", "string_agg(DISTINCT Author.name, ', ') AS author",
+            "string_agg(DISTINCT G.genre_name, ', ') AS genre", "string_agg(DISTINCT A.name, ', ') AS author",
             'B.description')
           ->join("\"Book_Genre\"", 'book_id', '=', 'B.book_id')
           ->join("\"Book_Author\"", 'book_id', '=', 'B.book_id')
-          ->join("\"Genre\"", 'genre_id', '=', "\"Book_Genre\".genre_id")
-          ->join("\"Author\"", 'author_id', '=', "\"Book_Author\".author_id");
+          ->join("\"Genre\" G", 'genre_id', '=', "\"Book_Genre\".genre_id")
+          ->join("\"Author\" A", 'author_id', '=', "\"Book_Author\".author_id");
 
         if($book_id !== null && $user_id !== null){
             return $this->getOneFavoriteBookById($sql, $book_id, $user_id);
