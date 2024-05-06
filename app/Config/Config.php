@@ -15,6 +15,6 @@ class Config implements ConfigInterface
         }
 
         $config = require $configPath;
-        return $config[$key] ?? $default;
+        return $config[$key] ?? $config;
     }
 }
