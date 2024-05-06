@@ -38,7 +38,6 @@ class Database implements DatabaseInterface
     private function connect(): void
     {
         $params = $this->config->get('database');
-        print_r($params);
         $defaultOptions = [
           PDO::ATTR_EMULATE_PREPARES => false,
           PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -47,7 +46,7 @@ class Database implements DatabaseInterface
         try {
             $dsn = "{$params['driver']}:host={$params['host']};dbname={$params['dbname']}";
 
-            $this->pdo = new PDO($dsn, $params['user'], $params['pass'], $defaultOptions);
+            $this->pdo = new PDO($dsn, $params['user'], $params['password'], $defaultOptions);
 
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (\PDOException $e) {
