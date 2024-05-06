@@ -2,7 +2,7 @@
 
 namespace App\Core\Routes;
 
-class Route
+use Booksuse Booksuse Booksuse Booksuse Booksuse Booksuse Booksuse Booksclass Route
 {
     private static array $routes = [
       'GET'    => [],

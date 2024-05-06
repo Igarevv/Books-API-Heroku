@@ -2,10 +2,10 @@
 
 namespace App\Http\Service;
 
-use App\Core\Http\Response\Response;
-use App\Http\Exceptions\NotFoundException;
-use App\Http\Exceptions\ServerException;
-use App\Http\Model\Repository\Book\BookRepository;
+use docker\app\Core\Http\Response\Response;
+use docker\app\Http\Exceptions\NotFoundException;
+use docker\app\Http\Exceptions\ServerException;
+use docker\app\Http\Model\Repository\Book\BookRepository;
 
 class FileService
 {
@@ -15,8 +15,8 @@ class FileService
     ) {}
 
     /**
-     * @throws \App\Http\Exceptions\NotFoundException
-     * @throws \App\Http\Exceptions\ServerException
+     * @throws docker\app\Http\Exceptions\NotFoundException
+     * @throws docker\app\Http\Exceptions\ServerException
      */
     public function saveCSV(): void
     {

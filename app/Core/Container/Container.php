@@ -2,14 +2,14 @@
 
 namespace App\Core\Container;
 
-use App\Http\Exceptions\ContainerException;
+use docker\app\Http\Exceptions\ContainerException;
 use Exception;
-use Psr\Container\ContainerInterface;
+use docker\vendor\psr\container\src\ContainerInterface;
 use ReflectionException;
 use ReflectionNamedType;
 use ReflectionParameter;
 
-class Container implements ContainerInterface
+class Container implements docker\vendor\psr\container\src\ContainerInterface
 {
 
     private array $entries = [];

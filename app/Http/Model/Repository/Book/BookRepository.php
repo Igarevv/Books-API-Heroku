@@ -2,11 +2,11 @@
 
 namespace App\Http\Model\Repository\Book;
 
-use App\Core\Database\DatabaseInterface;
-use App\Core\Database\DeleteQueryBuilder\DeleteQueryBuilder;
-use App\Core\Database\Insert\InsertQueryBuilder;
-use App\Core\Database\Select\SelectQueryBuilder;
-use App\Http\Model\DTO\Book;
+use docker\app\Core\Database\DatabaseInterface;
+use docker\app\Core\Database\DeleteQueryBuilder\DeleteQueryBuilder;
+use docker\app\Core\Database\Insert\InsertQueryBuilder;
+use Booksuse docker\app\Core\Database\Select\SelectQueryBuilder;
+use docker\app\Http\Model\DTO\Book;
 
 class BookRepository implements BookRepositoryInterface
 {

@@ -2,7 +2,7 @@
 
 namespace App\Role\User;
 
-use App\Role\Exception\RoleManagementException;
+use Booksuse Booksuse docker\app\Role\Exception\RoleManagementException;
 
 class Role
 {

@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Core\Helpers\JWTHelper;
-use App\Core\Http\Request\RequestInterface;
-use App\Core\Http\Response\JsonResponse;
-use App\Http\Exceptions\NotFoundException;
-use App\Http\Exceptions\UserException;
-use App\Http\Service\UserService;
-use App\Core\Http\Response\Response;
+use docker\app\Core\Helpers\JWTHelper;
+use docker\app\Core\Http\Request\RequestInterface;
+use docker\app\Core\Http\Response\JsonResponse;
+use docker\app\Http\Exceptions\NotFoundException;
+use docker\app\Http\Exceptions\UserException;
+use docker\app\Http\Service\UserService;
+use docker\app\Core\Http\Response\Response;
 
 class UserController
 {

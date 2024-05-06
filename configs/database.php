@@ -1,5 +1,5 @@
 <?php
-use Symfony\Component\Dotenv\Dotenv;
+use docker\vendor\symfony\dotenv\Dotenv;
 
 // For local
 /*return [

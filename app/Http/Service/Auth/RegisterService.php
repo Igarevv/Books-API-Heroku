@@ -2,11 +2,11 @@
 
 namespace App\Http\Service\Auth;
 
-use App\Core\Validator\ValidatorInterface;
-use App\Http\Exceptions\DataException;
-use App\Http\Model\Repository\User\UserRepositoryInterface;
-use App\Http\Service\FieldValidationService;
-use Symfony\Component\VarDumper\Cloner\Data;
+use docker\app\Core\Validator\ValidatorInterface;
+use docker\app\Http\Exceptions\DataException;
+use docker\app\Http\Model\Repository\User\UserRepositoryInterface;
+use docker\app\Http\Service\FieldValidationService;
+use dumper\Cloner\Data;
 
 class RegisterService
 {
@@ -24,7 +24,7 @@ class RegisterService
     }
 
     /**
-     * @throws \App\Http\Exceptions\DataException
+     * @throws docker\app\Http\Exceptions\DataException
      */
     public function validate(array $userData): bool
     {

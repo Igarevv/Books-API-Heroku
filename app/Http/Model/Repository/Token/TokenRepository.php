@@ -2,11 +2,11 @@
 
 namespace App\Http\Model\Repository\Token;
 
-use App\Core\Database\DatabaseInterface;
-use App\Core\Database\DeleteQueryBuilder\DeleteQueryBuilder;
-use App\Core\Database\Insert\InsertQueryBuilder;
-use App\Core\Database\Select\SelectQueryBuilder;
-use App\Core\Database\Update\UpdateQueryBuilder;
+use Booksuse docker\app\Core\Database\DatabaseInterface;
+use docker\app\Core\Database\DeleteQueryBuilder\DeleteQueryBuilder;
+use docker\app\Core\Database\Insert\InsertQueryBuilder;
+use docker\app\Core\Database\Select\SelectQueryBuilder;
+use docker\app\Core\Database\Update\UpdateQueryBuilder;
 
 class TokenRepository implements TokenRepositoryInterface
 {

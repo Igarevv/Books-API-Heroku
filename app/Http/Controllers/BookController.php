@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Core\Http\Request\RequestInterface;
-use App\Core\Http\Response\JsonResponse;
-use App\Core\Http\Response\Response;
-use App\Http\Exceptions\ServerException;
-use App\Http\Exceptions\DataException;
-use App\Http\Exceptions\NotFoundException;
-use App\Http\Service\BookService;
+use docker\app\Core\Http\Request\RequestInterface;
+use docker\app\Core\Http\Response\JsonResponse;
+use docker\app\Core\Http\Response\Response;
+use docker\app\Http\Exceptions\ServerException;
+use docker\app\Http\Exceptions\DataException;
+use docker\app\Http\Exceptions\NotFoundException;
+use docker\app\Http\Service\BookService;
 
 class BookController
 {

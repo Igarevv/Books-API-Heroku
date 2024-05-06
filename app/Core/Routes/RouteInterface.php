@@ -3,7 +3,7 @@
 namespace App\Core\Routes;
 
 
-use App\Core\Http\Request\RequestInterface;
+use docker\app\Core\Http\Request\RequestInterface;
 
 interface RouteInterface
 {

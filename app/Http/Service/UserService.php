@@ -2,10 +2,10 @@
 
 namespace App\Http\Service;
 
-use App\Http\Exceptions\NotFoundException;
-use App\Http\Exceptions\UserException;
-use App\Http\Model\Repository\Book\BookRepositoryInterface;
-use App\Http\Model\Repository\User\UserRepositoryInterface;
+use docker\app\Http\Exceptions\NotFoundException;
+use docker\app\Http\Exceptions\UserException;
+use docker\app\Http\Model\Repository\Book\BookRepositoryInterface;
+use docker\app\Http\Model\Repository\User\UserRepositoryInterface;
 
 class UserService
 {
@@ -15,8 +15,8 @@ class UserService
     ) {}
 
     /**
-     * @throws \App\Http\Exceptions\NotFoundException
-     * @throws \App\Http\Exceptions\UserException
+     * @throws docker\app\Http\Exceptions\NotFoundException
+     * @throws docker\app\Http\Exceptions\UserException
      */
     public function addBook(mixed $user_id, mixed $book_id): void
     {
@@ -36,7 +36,7 @@ class UserService
     }
 
     /**
-     * @throws \App\Http\Exceptions\NotFoundException
+     * @throws docker\app\Http\Exceptions\NotFoundException
      */
     public function deleteBook(mixed $user_id, mixed $book_id): void
     {
@@ -52,7 +52,7 @@ class UserService
     }
 
     /**
-     * @throws \App\Http\Exceptions\NotFoundException
+     * @throws docker\app\Http\Exceptions\NotFoundException
      */
     public function showAllFavoriteBooks(mixed $user_id): array
     {
@@ -65,7 +65,7 @@ class UserService
     }
 
     /**
-     * @throws \App\Http\Exceptions\NotFoundException
+     * @throws docker\app\Http\Exceptions\NotFoundException
      */
     public function showOneFavoriteBook(mixed $user_id, mixed $book_id): array
     {

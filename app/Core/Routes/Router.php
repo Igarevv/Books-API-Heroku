@@ -2,13 +2,13 @@
 
 namespace App\Core\Routes;
 
-use App\Core\Container\Container;
-use App\Core\Http\Json\JsonParser;
-use App\Core\Http\Request\RequestInterface;
-use App\Core\Http\Response\JsonResponse;
-use App\Core\Http\Response\Response;
-use App\Core\Http\Response\ResponseInterface;
-use App\Core\Middleware\Middleware;
+use Booksuse docker\app\Core\Container\Container;
+use docker\app\Core\Http\Json\JsonParser;
+use docker\app\Core\Http\Request\RequestInterface;
+use docker\app\Core\Http\Response\JsonResponse;
+use docker\app\Core\Http\Response\Response;
+use docker\app\Core\Http\Response\ResponseInterface;
+use docker\app\Core\Middleware\Middleware;use Books
 
 class Router implements RouteInterface
 {
@@ -23,8 +23,8 @@ class Router implements RouteInterface
     }
 
     /**
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws docker\vendor\psr\container\src\ContainerExceptionInterface
+     * @throws docker\vendor\psr\container\src\NotFoundExceptionInterface
      * @throws \JsonException
      */
     public function dispatch(string $uri, string $httpMethod, RequestInterface $request): void

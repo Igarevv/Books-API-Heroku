@@ -2,9 +2,9 @@
 
 namespace App\Core\Helpers;
 
-use App\Core\Http\Request\RequestInterface;
-use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
+use docker\app\Core\Http\Request\RequestInterface;
+use jwt\src\JWT;
+use jwt\src\Key;
 
 class JWTHelper
 {

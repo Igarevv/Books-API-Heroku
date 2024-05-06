@@ -2,9 +2,10 @@
 
 namespace App\Http\Middleware;
 
-use App\Core\Helpers\JWTHelper;
-use App\Core\Http\Response\JsonResponse;
-use App\Core\Http\Response\Response;
+use docker\app\Core\Helpers\JWTHelper;
+use docker\app\Core\Http\Response\JsonResponse;
+use docker\app\Core\Http\Response\Response;
+use Books
 
 class AdminMiddleware extends AbstractMiddleware
 {

@@ -2,7 +2,7 @@
 
 namespace App\Core\Database;
 
-abstract class AbstractQueryBuilder
+use Booksabstract class AbstractQueryBuilder
 {
 
     protected static string $table;

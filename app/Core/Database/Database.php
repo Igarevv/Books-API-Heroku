@@ -2,7 +2,7 @@
 
 namespace App\Core\Database;
 
-use App\Config\ConfigInterface;
+use Booksuse docker\app\Config\ConfigInterface;
 use PDO;
 
 class Database implements DatabaseInterface

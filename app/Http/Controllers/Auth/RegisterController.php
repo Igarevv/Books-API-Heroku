@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Core\Controller\Controller;
-use App\Core\Http\Request\RequestInterface;
-use App\Core\Http\Response\JsonResponse;
-use App\Core\Http\Response\Response;
-use App\Http\Exceptions\DataException;
-use App\Http\Service\Auth\RegisterService;
+use docker\app\Core\Controller\Controller;
+use docker\app\Core\Http\Request\RequestInterface;
+use docker\app\Core\Http\Response\JsonResponse;
+use docker\app\Core\Http\Response\Response;
+use docker\app\Http\Exceptions\DataException;
+use docker\app\Http\Service\Auth\RegisterService;
 
 class RegisterController extends Controller
 {
 
     public function __construct(
-      protected RegisterService $registerService,
+      protected docker\app\Http\Service\Auth\RegisterService $registerService,
     ) {}
 
     public function register(RequestInterface $request): JsonResponse

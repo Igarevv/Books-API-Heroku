@@ -2,13 +2,13 @@
 
 namespace App\Http\Service;
 
-use App\Core\Http\Response\Response;
-use App\Core\Validator\ValidatorInterface;
-use App\Http\Exceptions\ServerException;
-use App\Http\Exceptions\DataException;
-use App\Http\Exceptions\NotFoundException;
-use App\Http\Model\DTO\Book;
-use App\Http\Model\Repository\Book\BookRepositoryInterface;
+use Booksuse docker\app\Core\Http\Response\Response;
+use docker\app\Core\Validator\ValidatorInterface;
+use docker\app\Http\Exceptions\ServerException;
+use docker\app\Http\Exceptions\DataException;
+use docker\app\Http\Exceptions\NotFoundException;
+use docker\app\Http\Model\DTO\Book;
+use docker\app\Http\Model\Repository\Book\BookRepositoryInterface;
 
 class BookService
 {
@@ -20,7 +20,7 @@ class BookService
     ) {}
 
     /**
-     * @throws \App\Http\Exceptions\NotFoundException
+     * @throws docker\app\Http\Exceptions\NotFoundException
      */
     public function showAllBooks(?string $limitOffset): array
     {
@@ -45,7 +45,7 @@ class BookService
     }
 
     /**
-     * @throws \App\Http\Exceptions\NotFoundException
+     * @throws docker\app\Http\Exceptions\NotFoundException
      */
     public function showOneBook(mixed $book_id): array
     {
@@ -56,7 +56,7 @@ class BookService
         return $book;
     }
     /**
-     * @throws \App\Http\Exceptions\ServerException
+     * @throws docker\app\Http\Exceptions\ServerException
      */
     public function store(Book $bookDto): void
     {
@@ -67,7 +67,7 @@ class BookService
     }
 
     /**
-     * @throws \App\Http\Exceptions\NotFoundException
+     * @throws docker\app\Http\Exceptions\NotFoundException
      */
     public function delete(mixed $bookId): void
     {
@@ -91,7 +91,7 @@ class BookService
     }
 
     /**
-     * @throws \App\Http\Exceptions\DataException
+     * @throws docker\app\Http\Exceptions\DataException
      */
     public function validate(array $data): bool
     {

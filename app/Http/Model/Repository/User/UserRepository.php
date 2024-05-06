@@ -2,11 +2,11 @@
 
 namespace App\Http\Model\Repository\User;
 
-use App\Core\Database\DatabaseInterface;
-use App\Core\Database\DeleteQueryBuilder\DeleteQueryBuilder;
-use App\Core\Database\Insert\InsertQueryBuilder;
-use App\Core\Database\Select\SelectQueryBuilder;
-use Ramsey\Uuid\Uuid;
+use docker\app\Core\Database\DatabaseInterface;
+use docker\app\Core\Database\DeleteQueryBuilder\DeleteQueryBuilder;
+use docker\app\Core\Database\Insert\InsertQueryBuilder;
+use Booksuse docker\app\Core\Database\Select\SelectQueryBuilder;
+use docker\vendor\ramsey\uuid\src\Uuid;
 
 class UserRepository implements UserRepositoryInterface
 {

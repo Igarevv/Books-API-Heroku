@@ -2,7 +2,7 @@
 
 namespace App\Http\Model\Repository\Book;
 
-use App\Http\Model\DTO\Book;
+use docker\app\Http\Model\DTO\Book;
 
 interface BookRepositoryInterface
 {

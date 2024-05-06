@@ -2,9 +2,9 @@
 
 namespace App\Http\Service\Auth;
 
-use App\Http\Model\DTO\Tokens;
-use App\Http\Model\Repository\Token\TokenRepositoryInterface;
-use Firebase\JWT\JWT;
+use docker\app\Http\Model\DTO\Tokens;
+use docker\app\Http\Model\Repository\Token\TokenRepositoryInterface;
+use jwt\src\JWT;
 
 class TokenService
 {

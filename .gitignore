@@ -1,3 +1,4 @@
 .idea
-.vercel
-/php/
+/.env
+/composer.lock
+/Procfile

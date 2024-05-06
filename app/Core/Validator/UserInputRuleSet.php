@@ -2,7 +2,7 @@
 
 namespace App\Core\Validator;
 
-use App\App;
+use docker\app\App;
 
 class UserInputRuleSet
 {

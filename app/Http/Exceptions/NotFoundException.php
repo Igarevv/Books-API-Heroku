@@ -3,7 +3,7 @@
 namespace App\Http\Exceptions;
 
 
-use App\Core\Http\Response\Response;
+use docker\app\Core\Http\Response\Response;
 
 class NotFoundException extends \Exception
 {

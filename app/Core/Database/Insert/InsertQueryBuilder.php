@@ -2,13 +2,13 @@
 
 namespace App\Core\Database\Insert;
 
-use App\Core\Database\AbstractQueryBuilder;
+use docker\app\Core\Database\AbstractQueryBuilder;
 
 class InsertQueryBuilder extends AbstractQueryBuilder
 {
     protected array $values = [];
 
-    public function values(array $values): InsertQueryBuilder
+    public function values(array $values): docker\app\Core\Database\Insert\InsertQueryBuilder
     {
         $this->values = $values;
         return $this;
