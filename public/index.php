@@ -1,7 +1,10 @@
 <?php
-error_reporting(0);
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
+
 use App\App;
 use Symfony\Component\Dotenv\Dotenv;
+
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: Authorization, Content-Type, X-Forwarded-With");
 header("Access-Control-Allow-Methods: GET, POST, DELETE");

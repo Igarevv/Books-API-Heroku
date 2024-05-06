@@ -50,7 +50,7 @@ class Database implements DatabaseInterface
 
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (\PDOException $e) {
-            exit("Database connection failed(if you run app via docker, please wait a few min): {$e->getMessage()}");
+            exit("Database connection failed (if you run app via docker, please wait a few min): {$e->getMessage()}");
         }
     }
     public function lastInsertedId(): false|string
