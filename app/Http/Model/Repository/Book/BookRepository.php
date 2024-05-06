@@ -19,7 +19,7 @@ class BookRepository implements BookRepositoryInterface
     {
         $sql = SelectQueryBuilder::table('Book', 'B')
           ->select('B.book_id', 'B.title', 'B.year', 'B.isbn',
-            'GROUP_CONCAT(DISTINCT Genre.genre_name) AS genre', 'GROUP_CONCAT(DISTINCT Author.name) AS author',
+            'string_agg(DISTINCT Genre.genre_name, ', ') AS genre', 'string_agg(DISTINCT Author.name, ', ') AS author',
             'B.description')
           ->join('Book_Genre', 'book_id', '=', 'B.book_id')
           ->join('Book_Author', 'book_id', '=', 'B.book_id')
