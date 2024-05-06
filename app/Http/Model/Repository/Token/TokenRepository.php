@@ -10,7 +10,7 @@ use App\Core\Database\Update\UpdateQueryBuilder;
 
 class TokenRepository implements TokenRepositoryInterface
 {
-    private string $table = 'Refresh_user_token';
+    private string $table = "\"Refresh_user_token\"";
     public function __construct(
       private readonly DatabaseInterface $database
     )

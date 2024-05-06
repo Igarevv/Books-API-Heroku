@@ -10,7 +10,7 @@ use Ramsey\Uuid\Uuid;
 
 class UserRepository implements UserRepositoryInterface
 {
-    private string $table = 'User';
+    private string $table = "\"User\"";
     public function __construct(
       private readonly DatabaseInterface $database
     )
@@ -42,7 +42,7 @@ class UserRepository implements UserRepositoryInterface
 
     public function addFavoriteBook(mixed $user_id, mixed $book_id): bool
     {
-        $sql = InsertQueryBuilder::table('User_Book')
+        $sql = InsertQueryBuilder::table("\"User_Book\"")
           ->values(['user_id', 'book_id'])
           ->getQuery();
 
@@ -52,7 +52,7 @@ class UserRepository implements UserRepositoryInterface
     }
     public function isBookInFavorites(mixed $user_id, int $book_id): bool
     {
-        $sql = SelectQueryBuilder::table('User_Book')
+        $sql = SelectQueryBuilder::table("\"User_Book\"")
           ->select('*')
           ->where('user_id', '=', 'user_id')
           ->where('book_id', '=', 'book_id')
@@ -66,7 +66,7 @@ class UserRepository implements UserRepositoryInterface
 
     public function deleteFromFavorites(mixed $user_id, int $book_id): bool
     {
-        $sql = DeleteQueryBuilder::table('User_Book')
+        $sql = DeleteQueryBuilder::table("\"User_Book\"")
           ->where('user_id', '=', 'user_id')
           ->where('book_id', '=', 'book_id')
           ->getQuery();

@@ -25,7 +25,7 @@ class BookRepository implements BookRepositoryInterface
           ->join("\"Book_Author\"", 'book_id', '=', 'B.book_id')
           ->join("\"Genre\"", 'genre_id', '=', "\"Book_Genre\".genre_id")
           ->join("\"Author\"", 'author_id', '=', "\"Book_Author\".author_id");
-var_dump($sql->getQuery());
+
         if($book_id !== null && $user_id !== null){
             return $this->getOneFavoriteBookById($sql, $book_id, $user_id);
         }
