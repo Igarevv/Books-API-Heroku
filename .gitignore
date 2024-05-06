@@ -1,4 +1,5 @@
 .idea
-./.env
-./composer.lock
-./Procfile
+/vendor/
+composer.lock
+.env
+Procfile
