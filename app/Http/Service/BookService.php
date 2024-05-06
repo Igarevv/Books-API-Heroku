@@ -100,7 +100,7 @@ class BookService
           'year'        => ['digits:4'],
           'author'      => ['required'],
           'genre'       => ['required'],
-          'isbn'        => ['digits:13', 'unique:Book'],
+          'isbn'        => ['digits:13', "unique:\"Book\""],
           'description' => ['required'],
         ];
 
