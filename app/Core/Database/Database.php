@@ -37,11 +37,7 @@ class Database implements DatabaseInterface
     }
     private function connect(): void
     {
-        $driver = $this->config->get('database.driver');
-/*        $host = $this->config->get('database.host');
-        $dbname = $this->config->get('database.dbname');
-        $user = $this->config->get('database.user');
-        $password = $this->config->get('database.password');*/
+        $params = $this->config->get('database');
 
         $defaultOptions = [
           PDO::ATTR_EMULATE_PREPARES => false,
@@ -49,9 +45,9 @@ class Database implements DatabaseInterface
         ];
 
         try {
-            $dsn = "$driver:host=$host;dbname=$dbname";
+            $dsn = "{$params['driver']}:host={$params['host']};dbname={$params['dbname']}";
 
-            $this->pdo = new PDO($dsn, $user, $password, $defaultOptions);
+            $this->pdo = new PDO($dsn, $params['user'], $params['pass'], $defaultOptions);
 
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (\PDOException $e) {
