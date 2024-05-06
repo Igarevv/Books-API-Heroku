@@ -11,7 +11,7 @@
 return [
   'driver'   => 'pgsql',
   'dbname'   => 'dd5fa6l2aac8ac',
-  'host'     => 'cf9gid2f6uallg.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com', // mysql for docker, localhost for local
-  'user'     => 'u9120be039bei0',
-  'password' => 'p763582d1d9e2ce1cbf2806dfdcd338dfe73b83c5384a0a3beb1b8839a2d9870b',
+  'host'     => 'c7vbm80blivm58.cluster-czz5s0kz4scl.eu-west-1.rds.amazonaws.com', // mysql for docker, localhost for local
+  'user'     => 'u3ie1bpsuob73q',
+  'password' => 'pb33ac2648631cb865e8f21145b03bf486fa3e7c786ef967cea366d2f1312f66c',
 ];
