@@ -6,11 +6,6 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: Authorization, Content-Type, X-Forwarded-With");
 header("Access-Control-Allow-Methods: GET, POST, DELETE");
 
-if ($_SERVER['REQUEST_URI'] === '/swagger'){
-    require APP_PATH . '/public/swagger/index.php';
-    exit();
-}
-
 define('APP_PATH', dirname(__DIR__));
 
 require_once APP_PATH.'/vendor/autoload.php';

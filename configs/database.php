@@ -8,11 +8,13 @@
   'password' => 'Devbase75_',
 ];*/
 
-$db = parse_url(getenv("DATABASE_URL"));
+$dotEnv = new Dotenv();
+$dotEnv->load(APP_PATH.'/.env');
 
 return [
   'driver'   => 'pgsql',
-  'host'     => $db['host'],
-  'user'     => $db['user'],
-  'password' => $db['pass'],
+  'host'     => $_ENV['DB_HOST'],
+  'user'     => $_ENV['DB_USER'],
+  'password' => $_ENV['DB_PASS'],
+  'dbname'   => $_ENV['DB_NAME']
 ];
