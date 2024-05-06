@@ -30,7 +30,7 @@ class RegisterService
     {
         $rules = [
           'name' => ['required', 'max:255', 'alphanumeric'],
-          'email' => ['email', 'unique:User'],
+          'email' => ['email', "unique:\"User\""],
           'password' => ['required', 'min:8'],
         ];
 
