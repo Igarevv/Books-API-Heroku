@@ -12,8 +12,17 @@ use Symfony\Component\Dotenv\Dotenv;
 
 //For Heroku
 
-$dotEnv = new Dotenv();
-$dotEnv->load(APP_PATH.'/.env');
+$db = parse_url(getenv("DB_URL"));
+
+$pdo = "pgsql:" . sprintf(
+    "host=%s;port=%s;user=%s;password=%s;dbname=%s",
+    $db["host"],
+    $db["port"],
+    $db["user"],
+    $db["pass"],
+    ltrim($db["path"], "/")
+  );
+echo $pdo;
 
 return [
   'driver'   => 'pgsql',
